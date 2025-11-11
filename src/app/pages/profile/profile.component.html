@@ -74,13 +74,15 @@
                 <button class="close-btn" (click)="closeAllModals()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Nom</label>
-                    <input type="text" [(ngModel)]="tempName" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" [(ngModel)]="tempEmail" class="form-input">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" [(ngModel)]="tempName" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" [(ngModel)]="tempEmail" class="form-input">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -99,12 +101,14 @@
             </div>
             <div class="modal-body">
                 <p>Sélectionnez les types de parfums que vous préférez :</p>
-                <div class="preferences-list">
-                    <label *ngFor="let pref of olfactoryPreferences" class="preference-item">
-                        <input type="checkbox" [(ngModel)]="pref.selected">
-                        <span class="checkmark"></span>
-                        {{ pref.name }}
-                    </label>
+                <div class="form-container">
+                    <div class="preferences-list">
+                        <label *ngFor="let pref of olfactoryPreferences" class="preference-item">
+                            <input type="checkbox" [(ngModel)]="pref.selected">
+                            <span class="checkmark"></span>
+                            {{ pref.name }}
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,12 +127,14 @@
             </div>
             <div class="modal-body">
                 <p>Choisissez les types de notifications que vous souhaitez recevoir :</p>
-                <div class="preferences-list">
-                    <label *ngFor="let setting of notificationSettings" class="preference-item">
-                        <input type="checkbox" [(ngModel)]="setting.enabled">
-                        <span class="checkmark"></span>
-                        {{ setting.name }}
-                    </label>
+                <div class="form-container">
+                    <div class="preferences-list">
+                        <label *ngFor="let setting of notificationSettings" class="preference-item">
+                            <input type="checkbox" [(ngModel)]="setting.enabled">
+                            <span class="checkmark"></span>
+                            {{ setting.name }}
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -146,13 +152,15 @@
                 <button class="close-btn" (click)="closeAllModals()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Nouvelles initiales (2 lettres)</label>
-                    <input type="text" [(ngModel)]="tempInitials" maxlength="2" class="form-input" 
-                           [class.error]="tempInitials.length !== 2">
-                    <small *ngIf="tempInitials.length !== 2" class="error-text">
-                        Les initiales doivent comporter exactement 2 lettres
-                    </small>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Nouvelles initiales (2 lettres)</label>
+                        <input type="text" [(ngModel)]="tempInitials" maxlength="2" class="form-input" 
+                               [class.error]="tempInitials.length !== 2">
+                        <small *ngIf="tempInitials.length !== 2" class="error-text">
+                            Les initiales doivent comporter exactement 2 lettres
+                        </small>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

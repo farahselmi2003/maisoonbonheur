@@ -315,9 +315,10 @@
   }
 }
 
+/* IMAGES PLUS PETITES - MODIFICATION PRINCIPALE */
 .product-image {
   position: relative;
-  height: 200px;
+  height: 160px; /* Réduit de 200px à 160px */
   overflow: hidden;
   
   img {
@@ -332,16 +333,16 @@
   }
 }
 
-/* Bouton cœur SVG des favoris */
+/* Bouton cœur SVG des favoris - Ajusté pour les images plus petites */
 .wishlist-heart-btn {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 8px; /* Ajusté pour les images plus petites */
+  left: 8px; /* Ajusté pour les images plus petites */
   background: rgba(255, 255, 255, 0.95);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 36px; /* Légèrement réduit */
+  height: 36px; /* Légèrement réduit */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -352,8 +353,8 @@
   padding: 0;
 
   .heart-svg {
-    width: 20px;
-    height: 20px;
+    width: 18px; /* Légèrement réduit */
+    height: 18px; /* Légèrement réduit */
     transition: all 0.3s ease;
   }
 
@@ -408,24 +409,25 @@
   }
 }
 
+/* Badges - Ajustés pour les images plus petites */
 .product-badges {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px; /* Ajusté pour les images plus petites */
+  right: 8px; /* Ajusté pour les images plus petites */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   
   // S'assurer que les badges ne chevauchent pas le cœur sur mobile
   @media (max-width: 480px) {
-    top: 60px;
+    top: 50px; /* Ajusté pour les images plus petites */
   }
 }
 
 .badge {
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.6rem; /* Légèrement réduit */
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.7rem; /* Légèrement réduit */
   font-weight: 600;
   
   &.featured {
@@ -439,12 +441,13 @@
   }
 }
 
+/* Product info - Légèrement ajusté pour équilibrer les images plus petites */
 .product-info {
-  padding: 1.25rem;
+  padding: 1rem; /* Légèrement réduit de 1.25rem à 1rem */
 }
 
 .product-name {
-  font-size: 1.1rem;
+  font-size: 1.05rem; /* Légèrement réduit */
   font-weight: 600;
   color: #2d3748;
   margin-bottom: 0.25rem;
@@ -452,7 +455,7 @@
 }
 
 .product-brand {
-  font-size: 0.875rem;
+  font-size: 0.85rem; /* Légèrement réduit */
   color: #667eea;
   margin-bottom: 0.75rem;
   font-weight: 500;
@@ -471,7 +474,7 @@
   
   .star {
     color: #e2e8f0;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Légèrement réduit */
     
     &.filled {
       color: #ffc107;
@@ -480,7 +483,7 @@
 }
 
 .rating-value {
-  font-size: 0.875rem;
+  font-size: 0.85rem; /* Légèrement réduit */
   color: #64748b;
   font-weight: 500;
 }
@@ -495,9 +498,9 @@
 .tag {
   background: #f1f5f9;
   color: #475569;
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.6rem; /* Légèrement réduit */
   border-radius: 15px;
-  font-size: 0.75rem;
+  font-size: 0.7rem; /* Légèrement réduit */
   font-weight: 500;
 }
 
@@ -516,7 +519,7 @@
 }
 
 .product-price {
-  font-size: 1.25rem;
+  font-size: 1.2rem; /* Légèrement réduit */
   font-weight: 700;
   color: #667eea;
 }
@@ -713,6 +716,11 @@
     }
   }
 }
+.product-image {
+  margin: 0 auto;
+    max-height: 500px;
+    max-width: 300px; /* Encore plus petit sur mobile */
+  }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -743,13 +751,19 @@
     gap: 1rem;
   }
   
+  /* Ajustements mobiles pour les images plus petites */
+  .product-image {
+    height: 140px;
+    width: 50px; /* Encore plus petit sur mobile */
+  }
+  
   .wishlist-heart-btn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     
     .heart-svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
   }
   

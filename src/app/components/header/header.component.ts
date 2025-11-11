@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authSubscription?.unsubscribe();
   }
 
-  // ... le reste des méthodes reste inchangé ...
+
 
   // Méthodes pour le menu mobile
   toggleMobileMenu(): void {
