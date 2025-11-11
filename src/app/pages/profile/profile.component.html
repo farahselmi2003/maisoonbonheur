@@ -1,4 +1,4 @@
-<div class="container">
+<div class="profile-container">
     <div class="header">
         <h1>Mon Espace Personnel</h1>
         <p>Gérez votre univers olfactif et vos préférences</p>
@@ -74,7 +74,7 @@
                 <button class="close-btn" (click)="closeAllModals()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-container">
+                <div class="centered-form">
                     <div class="form-group">
                         <label>Nom</label>
                         <input type="text" [(ngModel)]="tempName" class="form-input">
@@ -101,7 +101,7 @@
             </div>
             <div class="modal-body">
                 <p>Sélectionnez les types de parfums que vous préférez :</p>
-                <div class="form-container">
+                <div class="centered-form">
                     <div class="preferences-list">
                         <label *ngFor="let pref of olfactoryPreferences" class="preference-item">
                             <input type="checkbox" [(ngModel)]="pref.selected">
@@ -127,7 +127,7 @@
             </div>
             <div class="modal-body">
                 <p>Choisissez les types de notifications que vous souhaitez recevoir :</p>
-                <div class="form-container">
+                <div class="centered-form">
                     <div class="preferences-list">
                         <label *ngFor="let setting of notificationSettings" class="preference-item">
                             <input type="checkbox" [(ngModel)]="setting.enabled">
@@ -152,7 +152,7 @@
                 <button class="close-btn" (click)="closeAllModals()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-container">
+                <div class="centered-form">
                     <div class="form-group">
                         <label>Nouvelles initiales (2 lettres)</label>
                         <input type="text" [(ngModel)]="tempInitials" maxlength="2" class="form-input" 

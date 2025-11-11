@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // ← Import direct
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
-  standalone: true, // ← Important pour les standalone components
-  imports: [CommonModule, FormsModule], // ← Ajoutez FormsModule ici
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
+  // Données du profil utilisateur
   userProfile = {
-    name: "Farah Selmi",
-    email: "farah@example.com",
-    avatarInitials: "FS",
-    notificationsEnabled: false
+    name: 'Farah Selmi',
+    email: 'farah@example.com',
+    avatarInitials: 'FS',
+    notificationsEnabled: true
   };
 
   // États des modals
@@ -30,82 +31,78 @@ export class ProfileComponent implements OnInit {
 
   // Préférences olfactives
   olfactoryPreferences = [
-    { name: 'Floral', selected: false },
-    { name: 'Boisé', selected: false },
-    { name: 'Citronné', selected: false },
-    { name: 'Oriental', selected: false },
-    { name: 'Fruité', selected: false },
-    { name: 'Aquatique', selected: false }
+    { name: 'Notes florales', selected: true },
+    { name: 'Notes boisées', selected: false },
+    { name: 'Notes orientales', selected: true },
+    { name: 'Notes fraîches', selected: false },
+    { name: 'Notes fruitées', selected: true }
   ];
 
   // Paramètres de notification
   notificationSettings = [
-    { name: 'Nouveaux parfums', enabled: true },
-    { name: 'Promotions exclusives', enabled: true },
-    { name: 'Conseils personnalisés', enabled: false },
-    { name: 'Actualités olfactives', enabled: true }
+    { name: 'Nouveaux produits', enabled: true },
+    { name: 'Promotions', enabled: true },
+    { name: 'Parfums recommandés', enabled: false },
+    { name: 'Actualités', enabled: true }
   ];
 
-  constructor() { }
-
-  ngOnInit(): void { }
-
-  toggleNotifications(): void {
-    this.userProfile.notificationsEnabled = !this.userProfile.notificationsEnabled;
-    
-    if (this.userProfile.notificationsEnabled) {
-      setTimeout(() => {
-        this.userProfile.notificationsEnabled = false;
-      }, 2000);
-    }
-  }
-
-  // Gestion des modals
-  openEditModal(): void {
+  constructor() {
     this.tempName = this.userProfile.name;
     this.tempEmail = this.userProfile.email;
+    this.tempInitials = this.userProfile.avatarInitials;
+  }
+
+  // Ouvrir les modals
+  openEditModal() {
     this.showEditModal = true;
   }
 
-  saveProfile(): void {
-    this.userProfile.name = this.tempName;
-    this.userProfile.email = this.tempEmail;
-    this.showEditModal = false;
-  }
-
-  openPreferencesModal(): void {
+  openPreferencesModal() {
     this.showPreferencesModal = true;
   }
 
-  savePreferences(): void {
-    const selected = this.olfactoryPreferences.filter(pref => pref.selected).map(pref => pref.name);
-    this.showPreferencesModal = false;
-  }
-
-  openNotificationsModal(): void {
+  openNotificationsModal() {
     this.showNotificationsModal = true;
   }
 
-  saveNotificationSettings(): void {
-    this.showNotificationsModal = false;
-  }
-
-  openAvatarModal(): void {
-    this.tempInitials = this.userProfile.avatarInitials;
+  openAvatarModal() {
     this.showAvatarModal = true;
   }
 
-  saveAvatar(): void {
-    if (this.tempInitials.length === 2) {
-      this.userProfile.avatarInitials = this.tempInitials.toUpperCase();
-    }
-    this.showAvatarModal = false;
-  }
-
-  closeAllModals(): void {
+  // Fermer tous les modals
+  closeAllModals() {
     this.showEditModal = false;
     this.showPreferencesModal = false;
     this.showNotificationsModal = false;
     this.showAvatarModal = false;
+  }
+
+  // Sauvegarder les modifications
+  saveProfile() {
+    this.userProfile.name = this.tempName;
+    this.userProfile.email = this.tempEmail;
+    this.closeAllModals();
+  }
+
+  savePreferences() {
+    console.log('Préférences sauvegardées:', this.olfactoryPreferences);
+    this.closeAllModals();
+  }
+
+  saveNotificationSettings() {
+    console.log('Paramètres de notification sauvegardés:', this.notificationSettings);
+    this.closeAllModals();
+  }
+
+  saveAvatar() {
+    if (this.tempInitials.length === 2) {
+      this.userProfile.avatarInitials = this.tempInitials.toUpperCase();
+      this.closeAllModals();
+    }
+  }
+
+  // Basculer les notifications
+  toggleNotifications() {
+    this.userProfile.notificationsEnabled = !this.userProfile.notificationsEnabled;
   }
 }
