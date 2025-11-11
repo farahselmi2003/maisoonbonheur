@@ -1,0 +1,104 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo et menu mobile -->
+    <div class="header-left">
+      <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a routerLink="/" class="logo">
+        <i class="fas fa-gem"></i>
+        <span>Maison Bonheur</span>
+      </a>
+    </div>
+
+    <!-- Navigation principale -->
+    <nav class="nav-menu" [class.active]="showMobileMenu">
+      <a routerLink="/" class="nav-link">Accueil</a>
+      <a routerLink="/catalog" class="nav-link">Catalogue</a>
+      <a routerLink="/creator" class="nav-link">Créateur</a>
+    </nav>
+
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Rechercher un parfum..." 
+          [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
+          (keyup.enter)="onSearchSubmit()"
+          class="search-input"
+        >
+        <button class="search-btn" (click)="onSearchSubmit()">
+          <i class="fas fa-search"></i>
+        </button>
+        <button *ngIf="searchQuery" class="clear-search" (click)="clearSearch()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Résultats de recherche -->
+      <div class="search-results" *ngIf="showSearchResults && searchResults.length > 0">
+        <div class="results-header">
+          <h4>Résultats de recherche</h4>
+        </div>
+        <div class="results-list">
+          <div 
+            *ngFor="let product of searchResults" 
+            class="result-item"
+            (click)="goToProduct(product.id)"
+          >
+            <img [src]="product.image" [alt]="product.name" class="result-image">
+            <div class="result-info">
+              <div class="result-name">{{ product.name }}</div>
+              <div class="result-brand">{{ product.brand }}</div>
+              <div class="result-price">{{ product.price }} TND</div>
+            </div>
+          </div>
+        </div>
+        <div class="results-footer">
+          <button class="view-all-results" (click)="onSearchSubmit()">
+            Voir tous les résultats
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions utilisateur -->
+    <div class="header-actions">
+      <!-- Favoris -->
+      <a routerLink="/wishlist" class="action-btn">
+        <i class="far fa-heart"></i>
+      </a>
+
+      <!-- Panier -->
+      <a routerLink="/cart" class="action-btn cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+      </a>
+
+      <!-- Profil utilisateur -->
+      <div class="profile-dropdown">
+        <button class="action-btn" (click)="toggleProfileMenu()">
+          <i class="fas fa-user"></i>
+        </button>
+        <div class="dropdown-menu" [class.show]="showProfileMenu">
+          <div *ngIf="user; else loginTemplate">
+            <div class="user-info">
+              <!-- Utilisation de displayName au lieu de user.name -->
+              <strong>{{ displayName }}</strong>
+              <small>{{ user.email }}</small>
+            </div>
+            <a routerLink="/profile" class="dropdown-item">Mon profil</a>
+            <a routerLink="/orders" class="dropdown-item">Mes commandes</a>
+            <button class="dropdown-item logout-btn" (click)="logout()">Déconnexion</button>
+          </div>
+          <ng-template #loginTemplate>
+            <a routerLink="/login" class="dropdown-item">Connexion</a>
+            <a routerLink="/register" class="dropdown-item">Inscription</a>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

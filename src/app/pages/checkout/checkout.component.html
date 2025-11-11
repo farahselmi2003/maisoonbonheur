@@ -1,0 +1,233 @@
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h2 class="checkout-title">
+      <i class="fas fa-shopping-cart"></i>
+      Finaliser la Commande
+    </h2>
+    <div class="checkout-steps">
+      <div class="step active">
+        <span class="step-number">1</span>
+        <span class="step-label">Panier</span>
+      </div>
+      <div class="step active">
+        <span class="step-number">2</span>
+        <span class="step-label">Livraison</span>
+      </div>
+      <div class="step active">
+        <span class="step-number">3</span>
+        <span class="step-label">Paiement</span>
+      </div>
+      <div class="step">
+        <span class="step-number">4</span>
+        <span class="step-label">Confirmation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkout-content">
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
+      <!-- Colonne gauche - Formulaire -->
+      <div class="form-column">
+        <!-- Adresse de livraison -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-truck"></i>
+            Adresse de Livraison
+          </h3>
+          <div formGroupName="shippingAddress" class="address-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input id="fullName" type="text" formControlName="fullName" placeholder="Votre nom complet">
+                <div *ngIf="shippingAddress.get('fullName')?.touched && shippingAddress.get('fullName')?.invalid" class="error-message">
+                  Le nom complet est requis (min. 3 caractères)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Adresse *</label>
+              <input id="address" type="text" formControlName="address" placeholder="Votre adresse complète">
+              <div *ngIf="shippingAddress.get('address')?.touched && shippingAddress.get('address')?.invalid" class="error-message">
+                L'adresse est requise (min. 5 caractères)
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">Ville *</label>
+                <input id="city" type="text" formControlName="city" placeholder="Votre ville">
+                <div *ngIf="shippingAddress.get('city')?.touched && shippingAddress.get('city')?.invalid" class="error-message">
+                  La ville est requise
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="postalCode">Code postal *</label>
+                <input id="postalCode" type="text" formControlName="postalCode" placeholder="0000" maxlength="4">
+                <div *ngIf="shippingAddress.get('postalCode')?.touched && shippingAddress.get('postalCode')?.invalid" class="error-message">
+                  Code postal invalide (4 chiffres)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="country">Pays *</label>
+                <select id="country" formControlName="country">
+                  <option value="Tunisie">Tunisie</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="phone">Téléphone *</label>
+                <input id="phone" type="tel" formControlName="phone" placeholder="XX XXX XXX" maxlength="8">
+                <div *ngIf="shippingAddress.get('phone')?.touched && shippingAddress.get('phone')?.invalid" class="error-message">
+                  Numéro de téléphone invalide (8 chiffres)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input id="email" type="email" formControlName="email" placeholder="votre@email.com">
+              <div *ngIf="shippingAddress.get('email')?.touched && shippingAddress.get('email')?.invalid" class="error-message">
+                Email invalide
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode de livraison -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-shipping-fast"></i>
+            Mode de Livraison
+          </h3>
+          <div class="shipping-methods">
+            <label *ngFor="let method of shippingMethods" class="shipping-method">
+              <input type="radio" formControlName="shippingMethod" [value]="method.id" (change)="onShippingMethodChange()">
+              <div class="method-content">
+                <div class="method-info">
+                  <span class="method-name">{{ method.name }}</span>
+                  <span class="method-delivery">{{ method.delivery }}</span>
+                </div>
+                <span class="method-cost">{{ method.cost }} TND</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mode de paiement -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-credit-card"></i>
+            Mode de Paiement
+          </h3>
+          <div class="payment-methods">
+            <label *ngFor="let method of paymentMethods" class="payment-method">
+              <input type="radio" formControlName="paymentMethod" [value]="method.id">
+              <i class="fas" [class]="method.icon"></i>
+              <span class="method-name">{{ method.name }}</span>
+            </label>
+          </div>
+
+          <!-- Détails carte de crédit -->
+          <div *ngIf="checkoutForm.get('paymentMethod')?.value === 'card'" formGroupName="cardDetails" class="card-details">
+            <div class="form-group">
+              <label for="cardName">Nom sur la carte *</label>
+              <input id="cardName" type="text" formControlName="cardName" placeholder="Votre nom">
+              <div *ngIf="cardDetails.get('cardName')?.touched && cardDetails.get('cardName')?.invalid" class="error-message">
+                Le nom sur la carte est requis
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardNumber">Numéro de carte *</label>
+              <input id="cardNumber" type="text" formControlName="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16">
+              <div *ngIf="cardDetails.get('cardNumber')?.touched && cardDetails.get('cardNumber')?.invalid" class="error-message">
+                Numéro de carte invalide (16 chiffres)
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiryDate">Date d'expiration *</label>
+                <input id="expiryDate" type="text" formControlName="expiryDate" placeholder="MM/AA" maxlength="5">
+                <div *ngIf="cardDetails.get('expiryDate')?.touched && cardDetails.get('expiryDate')?.invalid" class="error-message">
+                  Format invalide (MM/AA)
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV *</label>
+                <input id="cvv" type="text" formControlName="cvv" placeholder="123" maxlength="3">
+                <div *ngIf="cardDetails.get('cvv')?.touched && cardDetails.get('cvv')?.invalid" class="error-message">
+                  CVV invalide (3 chiffres)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conditions générales -->
+        <div class="form-section">
+          <label class="terms-agreement">
+            <input type="checkbox" formControlName="agreeToTerms">
+            <span class="checkmark"></span>
+            J'accepte les <a href="#" class="terms-link">conditions générales de vente</a> et la <a href="#" class="terms-link">politique de confidentialité</a> *
+          </label>
+          <div *ngIf="checkoutForm.get('agreeToTerms')?.touched && checkoutForm.get('agreeToTerms')?.invalid" class="error-message">
+            Vous devez accepter les conditions générales
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite - Récapitulatif -->
+      <div class="summary-column">
+        <div class="order-summary">
+          <h3 class="summary-title">Récapitulatif de la commande</h3>
+
+          <div class="items-list">
+            <div *ngFor="let item of cartItems" class="summary-item">
+              <img [src]="item.image_url || 'assets/images/default-perfume.jpg'" [alt]="item.name">
+              <div class="item-details">
+                <span class="item-name">{{ item.name }}</span>
+                <span class="item-price">{{ item.price }} TND x {{ item.quantity }}</span>
+              </div>
+              <span class="item-total">{{ getItemTotal(item) }} TND</span>
+            </div>
+          </div>
+
+          <div class="summary-totals">
+            <div class="total-line">
+              <span>Sous-total</span>
+              <span>{{ subtotal }} TND</span>
+            </div>
+            <div class="total-line">
+              <span>Livraison</span>
+              <span>{{ shippingCost }} TND</span>
+            </div>
+            <div class="total-line grand-total">
+              <span>Total</span>
+              <span>{{ total }} TND</span>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-order-btn" [disabled]="isLoading || checkoutForm.invalid || cartItems.length === 0">
+            <span *ngIf="!isLoading">
+              <i class="fas fa-lock"></i>
+              Payer {{ total }} TND
+            </span>
+            <span *ngIf="isLoading">
+              <i class="fas fa-spinner fa-spin"></i>
+              Traitement en cours...
+            </span>
+          </button>
+
+          <p class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            Paiement sécurisé - Vos données sont protégées
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

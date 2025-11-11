@@ -1,0 +1,706 @@
+// Nouvelle approche sans fonctions lighten/darken dépréciées
+@use "sass:color";
+
+// Variables SCSS avec nouvelles couleurs
+$primary-color: #8B5FBF;
+$primary-light: #6C63FF;
+$secondary-color: #FF8BA0;
+$secondary-light: #FFC6C7;
+$success-color: #4ECDC4;
+$success-light: #67D7E5;
+$text-primary: #2D3748;
+$text-secondary: #718096;
+$border-color: #E2E8F0;
+$background-light: #F7FAFC;
+$background-dark: #CBD5E0;
+$white: #FFFFFF;
+$error-color: #FC8181;
+
+// Couleurs ajustées manuellement pour remplacer lighten/darken
+$border-color-light: #F1F5F9; // ≈ lighten($border-color, 3%)
+$background-light-lighter: #F9FBFC; // ≈ lighten($background-light, 2%)
+$border-color-dark: #D1D9E6; // ≈ darken($border-color, 10%)
+
+// Mixins
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+}
+
+@mixin gradient-secondary {
+  background: linear-gradient(135deg, $secondary-color 0%, $secondary-light 100%);
+}
+
+@mixin gradient-success {
+  background: linear-gradient(135deg, $success-color 0%, $success-light 100%);
+}
+
+@mixin shadow-light {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+@mixin shadow-medium {
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+@mixin shadow-strong {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Styles de base
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, $background-light 0%, $background-dark 100%);
+  color: $text-primary;
+  min-height: 100vh;
+  @include flex-center;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+// Container principal centré
+.container {
+  width: 100%;
+  max-width: 480px;
+  background: $white;
+  border-radius: 24px;
+  @include shadow-medium;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    @include gradient-primary;
+  }
+
+  // Header avec nouvelle couleur
+  .header {
+    @include gradient-primary;
+    color: $white;
+    padding: 35px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '🌸';
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 24px;
+      opacity: 0.7;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+}
+
+// Section profil centrée
+.profile-section {
+  padding: 40px 30px;
+
+  .profile-card {
+    background: $white;
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    @include shadow-light;
+  }
+}
+
+// Avatar avec effet de profondeur
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  @include gradient-primary;
+  margin: 0 auto 25px;
+  @include flex-center;
+  color: $white;
+  font-size: 42px;
+  font-weight: 700;
+  box-shadow: 0 12px 30px rgba($primary-color, 0.3);
+  cursor: pointer;
+  @include transition-all;
+  position: relative;
+  border: 4px solid $white;
+  outline: 2px solid rgba($primary-color, 0.1);
+
+  &:hover {
+    transform: scale(1.08) rotate(5deg);
+    box-shadow: 0 15px 40px rgba($primary-color, 0.4);
+  }
+
+  &::before {
+    content: '✏️';
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: $white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    @include flex-center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Informations profil
+.profile-name {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: $text-primary;
+  letter-spacing: -0.5px;
+}
+
+.profile-email {
+  color: $text-secondary;
+  margin-bottom: 30px;
+  font-size: 16px;
+  @include flex-center;
+  gap: 10px;
+  
+  i {
+    color: $primary-color;
+  }
+}
+
+// Bouton notification avec icône dynamique
+.notification-btn {
+  @include gradient-secondary;
+  color: $white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  @include transition-all;
+  box-shadow: 0 6px 20px rgba($secondary-color, 0.3);
+  @include flex-center;
+  gap: 12px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 280px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba($secondary-color, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &.active {
+    @include gradient-success;
+    box-shadow: 0 6px 20px rgba($success-color, 0.3);
+
+    &:hover {
+      box-shadow: 0 8px 25px rgba($success-color, 0.4);
+    }
+  }
+
+  i {
+    font-size: 18px;
+  }
+}
+
+// Divider stylisé
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, $border-color, transparent);
+  margin: 35px 0;
+  position: relative;
+
+  &::before {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $white;
+    padding: 0 15px;
+    font-size: 18px;
+    color: $primary-color;
+  }
+}
+
+// Actions du profil avec icônes
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.action-btn {
+  background: $white;
+  border: 2px solid $border-color-light; // ✅ Remplacé lighten($border-color, 3%)
+  padding: 20px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  @include transition-all;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  color: $text-primary;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($primary-color, 0.03), transparent);
+    transition: left 0.6s;
+  }
+
+  &:hover {
+    background: $background-light-lighter; // ✅ Remplacé lighten($background-light, 2%)
+    border-color: $primary-color;
+    transform: translateY(-3px) translateX(5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+    &::before {
+      left: 100%;
+    }
+
+    .action-icon {
+      transform: scale(1.1) rotate(10deg);
+    }
+  }
+
+  // Bordures colorées différentes pour chaque bouton
+  &:nth-child(1) {
+    border-left: 4px solid $primary-color;
+  }
+
+  &:nth-child(2) {
+    border-left: 4px solid $secondary-color;
+  }
+
+  &:nth-child(3) {
+    border-left: 4px solid $success-color;
+  }
+
+  .action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    @include flex-center;
+    font-size: 20px;
+    @include transition-all;
+    flex-shrink: 0;
+
+    // Couleurs différentes pour chaque icône
+    &:nth-child(1) {
+      background: rgba($primary-color, 0.1);
+      color: $primary-color;
+    }
+
+    &:nth-child(2) {
+      background: rgba($secondary-color, 0.1);
+      color: $secondary-color;
+    }
+
+    &:nth-child(3) {
+      background: rgba($success-color, 0.1);
+      color: $success-color;
+    }
+  }
+
+  .action-text {
+    flex: 1;
+
+    .action-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: $text-primary;
+      font-size: 17px;
+    }
+
+    .action-desc {
+      color: $text-secondary;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+}
+
+// Styles pour les modals centrés
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  @include flex-center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  padding: 20px;
+}
+
+.modal {
+  background: $white;
+  border-radius: 20px;
+  @include shadow-strong;
+  width: 100%;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @keyframes modalAppear {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px 0;
+    border-bottom: none;
+    position: relative;
+
+    h2 {
+      margin: 0;
+      color: $text-primary;
+      font-size: 24px;
+      font-weight: 700;
+      @include flex-center;
+      gap: 12px;
+
+      &::before {
+        font-size: 20px;
+      }
+    }
+
+    // Icônes différentes pour chaque modal
+    #editModal & h2::before { content: '👤'; }
+    #preferencesModal & h2::before { content: '🌸'; }
+    #notificationsModal & h2::before { content: '🔔'; }
+    #avatarModal & h2::before { content: '🎨'; }
+
+    .close-btn {
+      background: rgba($text-secondary, 0.1);
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: $text-secondary;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
+      @include flex-center;
+      border-radius: 50%;
+      @include transition-all;
+
+      &:hover {
+        background: rgba($text-secondary, 0.2);
+        color: $text-primary;
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 30px;
+    
+    p {
+      margin-bottom: 25px;
+      color: $text-secondary;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      text-align: center;
+
+      label {
+        display: block;
+        margin-bottom: 12px;
+        font-weight: 600;
+        color: $text-primary;
+        font-size: 16px;
+        @include flex-center;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .form-input {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+        padding: 16px 20px;
+        border: 2px solid $border-color;
+        border-radius: 12px;
+        font-size: 16px;
+        @include transition-all;
+        text-align: center;
+        display: block;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          transform: translateY(-2px);
+        }
+
+        &.error {
+          border-color: $error-color;
+          box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+        }
+      }
+
+      .error-text {
+        color: $error-color;
+        font-size: 14px;
+        margin-top: 8px;
+        display: block;
+        text-align: center;
+      }
+    }
+
+    .preferences-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .preference-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      padding: 16px 20px;
+      border-radius: 12px;
+      border: 2px solid $border-color;
+      @include transition-all;
+      background: $white;
+
+      &:hover {
+        background: $background-light-lighter; // ✅ Remplacé lighten($background-light, 2%)
+        border-color: $primary-color;
+        transform: translateX(5px);
+      }
+
+      input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: $primary-color;
+      }
+
+      span:not(.checkmark) {
+        font-weight: 500;
+        color: $text-primary;
+        flex: 1;
+      }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    padding: 0 30px 30px;
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      @include transition-all;
+      min-width: 120px;
+      @include flex-center;
+      gap: 8px;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+    }
+
+    .btn-primary {
+      @include gradient-primary;
+      color: $white;
+      box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba($primary-color, 0.4);
+      }
+    }
+
+    .btn-secondary {
+      background: $border-color;
+      color: $text-secondary;
+
+      &:hover {
+        background: $border-color-dark; // ✅ Remplacé darken($border-color, 10%)
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    border-radius: 20px;
+    max-width: 100%;
+  }
+
+  .header {
+    padding: 30px 25px !important;
+
+    h1 {
+      font-size: 24px !important;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .profile-section {
+    padding: 30px 25px !important;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
+  }
+
+  .profile-card {
+    padding: 25px !important;
+  }
+
+  .action-btn {
+    padding: 18px;
+  }
+
+  .modal {
+    max-width: 100%;
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding: 25px !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .notification-btn {
+    max-width: 100% !important;
+    padding: 14px 20px;
+  }
+
+  .action-btn .action-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}
+
+// Accessibilité
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus visible
+button:focus-visible,
+input:focus-visible,
+.close-btn:focus-visible {
+  outline: 3px solid rgba($primary-color, 0.5);
+  outline-offset: 2px;
+}

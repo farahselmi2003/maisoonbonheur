@@ -1,0 +1,64 @@
+<div class="wishlist-container">
+  <div class="wishlist-header">
+    <h2 class="wishlist-title">
+      <i class="fas fa-heart"></i>
+      Mes Favoris
+    </h2>
+    <div class="wishlist-stats">
+      <span class="stat-item">
+        <i class="fas fa-cube"></i>
+        {{ wishlistItems.length }} article(s)
+      </span>
+      <span class="stat-item" *ngIf="getTotalPrice() > 0">
+        <i class="fas fa-tag"></i>
+        {{ getTotalPrice() }} TND
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="wishlistItems.length === 0" class="empty-wishlist">
+    <div class="empty-icon">
+      <i class="far fa-heart"></i>
+    </div>
+    <h3>Votre liste de favoris est vide</h3>
+    <p>Ajoutez vos parfums préférés en cliquant sur l'icône cœur</p>
+    <button class="browse-btn" routerLink="/catalog">
+      <i class="fas fa-search"></i>
+      Découvrir les parfums
+    </button>
+  </div>
+
+  <div *ngIf="wishlistItems.length > 0" class="wishlist-content">
+    <div class="wishlist-actions">
+      <button class="clear-btn" (click)="clearWishlist()">
+        <i class="fas fa-trash-alt"></i>
+        Vider la liste
+      </button>
+    </div>
+
+    <div class="wishlist-items">
+      <div *ngFor="let item of wishlistItems" class="wishlist-item">
+        <div class="item-image">
+          <img [src]="item.image_url || 'assets/images/default-perfume.jpg'" [alt]="item.name">
+        </div>
+        
+        <div class="item-details">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <!-- ✅ SUPPRIMÉ : item.brand n'existe pas dans l'interface -->
+          <p class="item-price">{{ item.price }} TND</p>
+          <!-- ✅ SUPPRIMÉ : item.addedDate n'existe pas dans l'interface -->
+        </div>
+
+        <div class="item-actions">
+          <button class="buy-btn" (click)="addToCart(item)">
+            <i class="fas fa-shopping-cart"></i>
+            Ajouter au panier
+          </button>
+          <button class="remove-btn" (click)="removeFromWishlist(item.id)" title="Supprimer">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

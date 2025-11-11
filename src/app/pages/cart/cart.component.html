@@ -1,0 +1,99 @@
+<div class="cart-container">
+  <!-- Header -->
+  <div class="cart-header">
+    <div class="header-content">
+      <h1 class="page-title">Mon Panier</h1>
+      <div class="cart-count" *ngIf="items.length > 0">
+        {{ items.length }} article{{ items.length > 1 ? 's' : '' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="cart-main">
+    <!-- Cart Items -->
+    <div class="cart-items" *ngIf="items.length > 0; else emptyCart">
+      <div class="cart-item" *ngFor="let item of items">
+        <div class="item-image">
+          <img [src]="item.image_url" [alt]="item.name" />
+        </div>
+        
+        <div class="item-details">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <p class="item-price">{{ item.price }} TND</p>
+        </div>
+        
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decrement(item)">−</button>
+          <input 
+            type="number" 
+            [value]="item.quantity" 
+            min="1"
+            (change)="onQuantityInput(item, $event.target.value)"
+            class="quantity-input" />
+          <button class="quantity-btn" (click)="increment(item)">+</button>
+        </div>
+        
+        <div class="item-total">
+          {{ getItemTotal(item) }} TND
+        </div>
+        
+        <button class="remove-btn" (click)="remove(item)">
+          Supprimer
+        </button>
+      </div>
+
+      <!-- Cart Actions -->
+      <div class="cart-actions">
+        <button class="action-btn secondary" (click)="clear()">
+          Vider le panier
+        </button>
+        <button class="action-btn" (click)="continueShopping()">
+          Continuer mes achats
+        </button>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary" *ngIf="items.length > 0">
+      <h3 class="summary-title">Récapitulatif</h3>
+      
+      <div class="summary-row">
+        <span class="label">Sous-total</span>
+        <span class="value">{{ subtotal }} TND</span>
+      </div>
+      
+      <div class="summary-row">
+        <span class="label">Frais de livraison</span>
+        <span class="value">{{ shipping }} TND</span>
+      </div>
+      
+      <div class="shipping-info">
+        Livraison standard - 7 TND
+      </div>
+      
+      <div class="summary-row total">
+        <span class="label">Total</span>
+        <span class="value">{{ total }} TND</span>
+      </div>
+      
+      <button 
+        class="checkout-btn" 
+        (click)="checkout()"
+        [disabled]="items.length === 0">
+        Procéder au paiement
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty Cart -->
+  <ng-template #emptyCart>
+    <div class="empty-cart">
+      <h2 class="empty-title">Votre panier est vide</h2>
+      <p class="empty-text">Découvrez nos parfums et ajoutez-les à votre panier !</p>
+      <button class="continue-btn" (click)="continueShopping()">
+        Découvrir le catalogue
+      </button>
+    </div>
+  </ng-template>
+</div>
