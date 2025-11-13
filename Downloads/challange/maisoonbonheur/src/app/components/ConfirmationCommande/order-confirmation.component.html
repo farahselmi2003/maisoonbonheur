@@ -1,0 +1,107 @@
+<div class="confirmation-container">
+  <div class="confirmation-content">
+    <!-- En-tête de confirmation -->
+    <div class="confirmation-header">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h1 class="confirmation-title">Commande Confirmée !</h1>
+      <p class="confirmation-subtitle">
+        Merci pour votre achat. Votre commande a été traitée avec succès.
+      </p>
+    </div>
+
+    <!-- Résumé de la commande -->
+    <div class="order-summary-card" *ngIf="order">
+      <div class="summary-header">
+        <div class="order-info">
+          <h3>Récapitulatif de la commande</h3>
+          <p class="order-number">Commande #{{ order.id }}</p>
+          <p class="order-date">
+            <i class="fas fa-calendar"></i>
+            Passée le {{ order.date | date:'dd/MM/yyyy à HH:mm' }}
+          </p>
+        </div>
+        <div class="order-status">
+          <span class="status-badge confirmed">
+            <i class="fas fa-check"></i>
+            Confirmée
+          </span>
+        </div>
+      </div>
+
+      <div class="summary-body">
+        <!-- Articles commandés -->
+        <div class="ordered-items">
+          <h4>Articles commandés</h4>
+          <div *ngFor="let item of order.items" class="ordered-item">
+            <img [src]="item.image_url || 'assets/images/default-perfume.jpg'" [alt]="item.name">
+            <div class="item-info">
+              <span class="item-name">{{ item.name }}</span>
+              <span class="item-quantity">Quantité: {{ item.quantity }}</span>
+            </div>
+            <span class="item-total">{{ item.price * item.quantity }} TND</span>
+          </div>
+        </div>
+
+        <!-- Informations de livraison -->
+        <div class="delivery-info">
+          <div class="info-section">
+            <h4>
+              <i class="fas fa-truck"></i>
+              Livraison
+            </h4>
+            <p><strong>Mode:</strong> {{ order.shippingMethod === 'express' ? 'Express' : 'Standard' }}</p>
+            <p><strong>Estimation:</strong> {{ getEstimatedDeliveryDate() | date:'dd/MM/yyyy' }}</p>
+            <p><strong>Adresse:</strong></p>
+            <div class="address">
+              <p>{{ order.shippingAddress.fullName }}</p>
+              <p>{{ order.shippingAddress.address }}</p>
+              <p>{{ order.shippingAddress.postalCode }} {{ order.shippingAddress.city }}</p>
+              <p>{{ order.shippingAddress.country }}</p>
+              <p><i class="fas fa-phone"></i> {{ order.shippingAddress.phone }}</p>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h4>
+              <i class="fas fa-credit-card"></i>
+              Paiement
+            </h4>
+            <p><strong>Méthode:</strong> 
+              <span *ngIf="order.paymentMethod === 'card'">Carte de crédit</span>
+              <span *ngIf="order.paymentMethod === 'paypal'">PayPal</span>
+              <span *ngIf="order.paymentMethod === 'on_delivery'">À la livraison</span>
+            </p>
+            <p><strong>Total:</strong> {{ order.total }} TND</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="confirmation-actions">
+      <button class="btn-primary" (click)="printOrder()">
+        <i class="fas fa-print"></i>
+        Imprimer le reçu
+      </button>
+      <button class="btn-secondary" routerLink="/orders">
+        <i class="fas fa-history"></i>
+        Voir mes commandes
+      </button>
+      <button class="btn-outline" routerLink="/catalog">
+        <i class="fas fa-shopping-bag"></i>
+        Continuer mes achats
+      </button>
+    </div>
+
+    <!-- Informations de suivi -->
+    <div class="tracking-info">
+      <h3>Suivi de votre commande</h3>
+      <p>
+        Vous recevrez un email de confirmation avec les détails de suivi dans les prochaines minutes.
+        Vous pouvez également suivre votre commande depuis votre <a routerLink="/orders" class="tracking-link">historique de commandes</a>.
+      </p>
+    </div>
+  </div>
+</div>

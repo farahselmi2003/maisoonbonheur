@@ -1,0 +1,134 @@
+<div class="creator-container">
+  <div class="creator-header">
+    <h1>Atelier de Création</h1>
+    <p class="subtitle">Composez votre parfum unique en sélectionnant vos notes favorites</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Message d'état -->
+  <div *ngIf="message" 
+       [class]="getMessageClass()"
+       class="message">
+    {{ message }}
+  </div>
+
+  <div class="creator-layout">
+    <!-- Section principale : Familles de notes -->
+    <div class="families-grid">
+      <div *ngFor="let family of families" class="family-card">
+        <h2>{{ family }}</h2>
+        
+        <div class="notes-grid">
+          <button
+            *ngFor="let note of getNotesByFamily(family)"
+            (click)="toggleNoteSelection(note)"
+            [class.selected]="isSelected(note)"
+            [disabled]="!isSelected(note) && selectedNotes.length >= maxNotes"
+            class="note-button"
+          >
+            <div class="note-content">
+              <div class="note-icon">{{ note.icon }}</div>
+              <div class="note-name">{{ note.name }}</div>
+              <div class="note-intensity">
+                <div class="intensity-bar">
+                  <div class="intensity-fill" 
+                       [style.width.%]="note.intensity * 10"></div>
+                </div>
+                <span class="intensity-value">{{ note.intensity }}/10</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar : Résumé de la création -->
+    <div class="summary">
+      <h2>Votre création</h2>
+
+      <div *ngIf="selectedNotes.length > 0; else emptyState" class="creation-details">
+        <!-- Notes sélectionnées -->
+        <div class="selected-notes">
+          <h3>Notes sélectionnées :</h3>
+          <ul class="notes-list">
+            <li *ngFor="let note of selectedNotes" class="note-item">
+              <div class="note-info">
+                <div class="note-name">{{ note.name }}</div>
+                <div class="note-meta">
+                  <span class="family">{{ note.family }}</span> • 
+                  Intensité: <span class="intensity">{{ note.intensity }}/10</span>
+                </div>
+              </div>
+              <button 
+                (click)="removeNote(note)" 
+                class="remove-button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+                Retirer
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Aperçu du parfum -->
+        <div class="creation-preview">
+          <h3>Aperçu de votre parfum</h3>
+          <div class="preview-details">
+            <div class="detail-item">
+              <strong>Saison :</strong>
+              <span class="detail-value season-indicator" [class]="getSeasonClass()">
+                {{ currentSeason }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <strong>Humeur :</strong>
+              <span class="detail-value">{{ currentMood }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Intensité moyenne :</strong>
+              <span class="detail-value intensity-badge" [class]="getIntensityClass()">
+                {{ averageIntensity.toFixed(1) }}/10
+              </span>
+            </div>
+            <div class="detail-item">
+              <strong>Prix :</strong>
+              <span class="detail-value price">{{ creationPrice }} TND</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton d'action principal -->
+        <div class="action-buttons">
+          <button
+            (click)="saveAndAddToCart()"
+            [disabled]="loading || selectedNotes.length === 0"
+            class="save-button primary"
+          >
+            <span *ngIf="loading" class="loading-spinner"></span>
+            <span *ngIf="!loading">🛒</span>
+            {{ loading ? 'Création en cours...' : 'Enregistrer(' + creationPrice + ' TND)' }}
+          </button>
+
+          <button
+            (click)="resetSelection()"
+            [disabled]="loading || selectedNotes.length === 0"
+            class="save-button secondary"
+          >
+            <span>🔄</span>
+            Recommencer
+          </button>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <div class="empty-icon">🎵</div>
+          <p class="empty-text">Aucune note sélectionnée pour le moment.</p>
+          <p class="empty-hint">Sélectionnez jusqu'à {{ maxNotes }} notes pour créer votre parfum unique.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="home-page">
+  <!-- Hero Carousel -->
+  <div class="hero-carousel">
+    <div class="carousel-container">
+      <div 
+        *ngFor="let slide of slides; let i = index" 
+        class="carousel-slide" 
+        [class.active]="i === currentSlide"
+      >
+        <div 
+          class="slide-image" 
+          [style.backgroundImage]="'url(' + slide.image + ')'"
+        ></div>
+        <div class="slide-content">
+          <h1 class="slide-title">{{ slide.title }}</h1>
+          <p class="slide-subtitle">{{ slide.subtitle }}</p>
+          <button class="slide-cta" (click)="navigateTo(slide.link)">
+            {{ slide.cta }}
+          </button>
+        </div>
+      </div>
+      
+      <div class="carousel-controls">
+        <button class="carousel-btn" (click)="previousSlide()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn" (click)="nextSlide()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <div class="carousel-indicators">
+        <button 
+          *ngFor="let slide of slides; let i = index" 
+          class="indicator" 
+          [class.active]="i === currentSlide"
+          (click)="goToSlide(i)"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <div class="container">
+      <h2 class="section-title">Nos Catégories</h2>
+      <p class="section-subtitle">Découvrez nos collections de parfums</p>
+      
+      <div class="categories-grid">
+        <a 
+          *ngFor="let category of categories" 
+          [routerLink]="['/catalog']" 
+          [queryParams]="{ category: category.id }"
+          class="category-card"
+        >
+          <div 
+            class="category-image"
+            [style.backgroundImage]="'url(' + (category.image_url || 'assets/images/default-category.jpg') + ')'"
+          ></div>
+          <div class="category-info">
+            <h3 class="category-name">{{ category.name }}</h3>
+            <p class="category-description">{{ category.description || 'Découvrez notre collection exclusive' }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="featured-section">
+    <div class="container">
+      <h2 class="section-title">Parfums en Vedette</h2>
+      <p class="section-subtitle">Nos fragrances les plus populaires</p>
+      
+      <div class="featured-grid">
+        <div 
+          *ngFor="let perfume of featuredPerfumes" 
+          class="product-card"
+          (click)="goToProduct(perfume.id)"
+        >
+          <div class="product-image">
+            <img [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" [alt]="perfume.name" />
+            <div class="badge" *ngIf="perfume.is_featured">Populaire</div>
+          </div>
+          <div class="product-info">
+            <p class="product-brand">{{ perfume.brand }}</p>
+            <h3 class="product-name">{{ perfume.name }}</h3>
+            
+            <div class="product-rating">
+              <div class="stars">
+                <span 
+                  *ngFor="let star of getStarsArray(perfume.rating); let i = index" 
+                  class="star" 
+                  [class.filled]="star === 1"
+                  [class.half]="star === 0.5"
+                >
+                  ★
+                </span>
+              </div>
+              <span class="rating-value">{{ perfume.rating.toFixed(1) }}</span>
+            </div>
+            
+            <div class="product-tags">
+              <span class="tag" *ngIf="perfume.intensity">{{ perfume.intensity }}</span>
+              <span class="tag" *ngIf="perfume.season && perfume.season !== 'All'">{{ perfume.season }}</span>
+              <span class="tag" *ngIf="perfume.mood">{{ perfume.mood }}</span>
+            </div>
+            
+            <div class="product-footer">
+              <div class="product-price">{{ perfume.price }} TND</div>
+              <button 
+                class="btn-add-cart" 
+                (click)="addToCart(perfume, $event)"
+              >
+                <i class="fas fa-shopping-cart"></i>
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator Promo Section -->
+  <section class="creator-promo">
+    <div class="promo-content">
+      <div class="promo-text">
+        <h2>Créez Votre Parfum Unique</h2>
+        <p>Laissez libre cours à votre créativité et concevez un parfum qui vous ressemble. Notre outil de création vous guide pas à pas pour mélanger les notes et créer une fragrance unique.</p>
+        <a [routerLink]="['/creator']" class="btn-primary">Commencer la création</a>
+      </div>
+      <div class="promo-image">
+        <img src="../../../assets/images/20.webp" alt="Créateur de parfum" />
+      </div>
+    </div>
+  </section>
+</div>

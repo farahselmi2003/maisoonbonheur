@@ -1,0 +1,304 @@
+// Variables avec couleurs prédéfinies pour éviter lighten/darken
+$primary-color: #8B5FBF;
+$primary-light: #6C63FF;
+$secondary-color: #FF8BA0;
+$background-light: #F7FAFC;
+$background-light-darker: #E8EDF2; // ✅ Remplacé darken($background-light, 5%)
+$text-primary: #2D3748;
+$text-secondary: #718096;
+$text-secondary-lighter: #8A9BB8; // ✅ Remplacé lighten($text-secondary, 10%)
+$border-color: #E2E8F0;
+$success-color: #4ECDC4;
+$success-color-darker: #3BB5AC; // ✅ Remplacé darken($success-color, 10%)
+
+// Mixins
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+}
+
+@mixin shadow-light {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+@mixin shadow-medium {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin transition-all {
+  transition: all 0.3s ease;
+}
+
+// Styles principaux
+.wishlist-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 70vh;
+
+  .wishlist-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid $border-color;
+
+    .wishlist-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: 1rem;
+      @include flex-center;
+      justify-content: center;
+      gap: 1rem;
+
+      i {
+        color: $secondary-color;
+        font-size: 2.2rem;
+      }
+    }
+
+    .wishlist-stats {
+      @include flex-center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+
+      .stat-item {
+        background: $background-light;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        color: $text-primary;
+        @include flex-center;
+        gap: 0.5rem;
+        @include shadow-light;
+
+        i {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+// État vide
+.empty-wishlist {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 20px;
+  @include shadow-light;
+
+  .empty-icon {
+    font-size: 4rem;
+    color: $border-color;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    color: $text-primary;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: $text-secondary;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+
+  .browse-btn {
+    @include gradient-primary;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    @include transition-all;
+    @include shadow-light;
+    @include flex-center;
+    gap: 0.75rem;
+    margin: 0 auto;
+
+    &:hover {
+      transform: translateY(-2px);
+      @include shadow-medium;
+    }
+  }
+}
+
+// Contenu avec articles
+.wishlist-content {
+  .wishlist-actions {
+    text-align: right;
+    margin-bottom: 1.5rem;
+
+    .clear-btn {
+      background: rgba($secondary-color, 0.1);
+      color: $secondary-color;
+      border: 2px solid $secondary-color;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      @include transition-all;
+      @include flex-center;
+      gap: 0.5rem;
+
+      &:hover {
+        background: $secondary-color;
+        color: white;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Articles de la wishlist
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.wishlist-item {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  @include shadow-light;
+  @include transition-all;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-3px);
+    @include shadow-medium;
+    border-color: rgba($primary-color, 0.1);
+  }
+
+  .item-image {
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+  }
+
+  .item-details {
+    flex: 1;
+
+    .item-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: $success-color;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+
+    .buy-btn {
+      background: $success-color;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      @include transition-all;
+      @include flex-center;
+      gap: 0.5rem;
+      @include shadow-light;
+
+      &:hover {
+        background: $success-color-darker; // ✅ Remplacé darken($success-color, 10%)
+        transform: translateY(-2px);
+      }
+    }
+
+    .remove-btn {
+      background: rgba($secondary-color, 0.1);
+      color: $secondary-color;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      @include transition-all;
+      @include flex-center;
+      justify-content: center;
+
+      &:hover {
+        background: $secondary-color;
+        color: white;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .wishlist-container {
+    padding: 1rem;
+
+    .wishlist-header {
+      .wishlist-title {
+        font-size: 2rem;
+      }
+
+      .wishlist-stats {
+        gap: 1rem;
+
+        .stat-item {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .wishlist-item {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+
+      .item-actions {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .empty-wishlist {
+    padding: 2rem 1rem;
+
+    .empty-icon {
+      font-size: 3rem;
+    }
+  }
+
+  .wishlist-actions {
+    text-align: center !important;
+  }
+}

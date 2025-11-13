@@ -1,0 +1,201 @@
+<div class="product-detail-container">
+  <!-- État de chargement -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement du produit...</p>
+  </div>
+
+  <!-- État d'erreur -->
+  <div *ngIf="error && !loading" class="error-state">
+    <div class="not-found-icon">
+      <i class="fas fa-search"></i>
+    </div>
+    <h3>Produit non trouvé</h3>
+    <p>Le produit que vous recherchez n'existe pas ou a été déplacé.</p>
+    <a routerLink="/catalog" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      Retour au catalogue
+    </a>
+  </div>
+
+  <!-- Contenu du produit -->
+  <div *ngIf="product && !loading" class="product-content-wrapper">
+    <!-- Section principale : Image + Informations -->
+    <div class="main-product-section">
+      <div class="image-gallery">
+        <!-- Image principale -->
+        <div class="main-image">
+          <img 
+            [src]="product.images[selectedImageIndex]" 
+            [alt]="product.name" 
+            class="product-image-main" 
+          />
+        </div>
+
+        <!-- Miniatures -->
+        <div class="thumbnails" *ngIf="product.images.length > 1">
+          <div 
+            *ngFor="let img of product.images; let i = index" 
+            class="thumbnail-container"
+            [class.active]="selectedImageIndex === i"
+            (click)="selectImage(i)"
+          >
+            <img [src]="img" [alt]="product.name + ' thumbnail ' + (i+1)" class="thumbnail" />
+          </div>
+        </div>
+      </div>
+
+      <div class="product-info">
+        <!-- En-tête produit -->
+        <div class="product-header">
+          <div class="product-category">Parfum de luxe</div>
+          <h1 class="product-name">{{ product.name }}</h1>
+          <p class="product-brand">{{ product.brand }}</p>
+          
+          <!-- Rating -->
+          <div class="product-rating">
+            <div class="stars">
+              <span class="star" *ngFor="let star of getStarArray(); let i = index" 
+                    [class.filled]="star === 1"
+                    [class.half]="star === 0.5">
+                ★
+              </span>
+              <span class="rating-value">{{ getAverageRating().toFixed(1) }}</span>
+              <span class="review-count">({{ product.reviews.length }} avis)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prix et stock -->
+        <div class="price-stock-section">
+          <div class="price-section">
+            <p class="product-price">{{ product.price }} <span class="currency">TND</span></p>
+            <p class="price-note">Taxes incluses • Livraison gratuite</p>
+          </div>
+
+          <div class="stock-section">
+            <div class="stock-indicator">
+              <div class="stock-bar">
+                <div class="stock-fill" [style.width.%]="getStockPercentage()"></div>
+              </div>
+              <span class="stock-text">{{ product.stock }} produits en stock</span>
+            </div>
+            <div class="stock-warning" *ngIf="product.stock < 10">
+              ⚠️ Plus que quelques pièces disponibles
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="product-description-section">
+          <h3>Description</h3>
+          <p class="product-description">{{ product.description }}</p>
+        </div>
+
+        <!-- Caractéristiques -->
+        <div class="product-features" *ngIf="product.features?.length">
+          <h3>Caractéristiques</h3>
+          <div class="features-grid">
+            <div *ngFor="let feature of product.features" class="feature-item">
+              <i class="fas fa-check"></i>
+              <span>{{ feature }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Avis simple -->
+        <div class="reviews-simple" *ngIf="product">
+          <div class="reviews-header">
+            <h3>Avis clients</h3>
+            <div class="rating-summary">
+              <span class="average-rating">{{ getAverageRating().toFixed(1) }}</span>
+              <div class="stars-small">
+                <span class="star" *ngFor="let star of getStarArray(); let i = index" 
+                      [class.filled]="star === 1"
+                      [class.half]="star === 0.5">
+                  ★
+                </span>
+              </div>
+              <span class="reviews-count">({{ product.reviews.length }} avis)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sélecteur de quantité et ajout au panier -->
+        <div class="purchase-section">
+          <div class="quantity-section">
+            <span class="quantity-label">Quantité</span>
+            <div class="quantity-controls">
+              <button class="qty-btn" (click)="decrementQuantity()" [disabled]="quantity <= 1">
+                <i class="fas fa-minus"></i>
+              </button>
+              <span class="quantity-display">{{ quantity }}</span>
+              <button class="qty-btn" (click)="incrementQuantity()" [disabled]="quantity >= product.stock">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <span class="stock-info">Maximum: {{ product.stock }} unités</span>
+          </div>
+
+          <button 
+            class="add-to-cart-button" 
+            (click)="addToCart()"
+            [class.low-stock]="product.stock < 10"
+          >
+            <i class="fas fa-shopping-cart"></i>
+            {{ product.stock > 0 ? 'Ajouter au panier' : 'Rupture de stock' }}
+          </button>
+
+          <button class="wishlist-button" (click)="addToWishlist()">
+            <i class="far fa-heart"></i>
+            Ajouter aux favoris
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Produits Similaires en Ligne -->
+    <div class="similar-products-row" *ngIf="similarProducts.length > 0">
+      <div class="section-header">
+        <h2 class="section-title">Vous aimerez aussi</h2>
+        <p class="section-subtitle">Découvrez des fragrances similaires</p>
+      </div>
+      
+      <div class="similar-products-grid">
+        <div *ngFor="let similarProduct of similarProducts" class="similar-product-card">
+          <div class="product-image">
+            <img [src]="similarProduct.images[0]" [alt]="similarProduct.name" />
+            <div class="product-badge" *ngIf="similarProduct.stock < 10">
+              Bientôt épuisé
+            </div>
+          </div>
+          <div class="product-content">
+            <h4 class="product-name">{{ similarProduct.name }}</h4>
+            <p class="product-brand">{{ similarProduct.brand }}</p>
+            <div class="product-rating">
+              <div class="stars">
+                <span class="star" *ngFor="let star of getStarArrayForRating(similarProduct.rating); let i = index" 
+                      [class.filled]="star === 1"
+                      [class.half]="star === 0.5">
+                  ★
+                </span>
+              </div>
+              <span class="rating-value">{{ similarProduct.rating.toFixed(1) }}</span>
+            </div>
+            <div class="product-price">{{ similarProduct.price }} TND</div>
+            <div class="product-actions">
+              <button class="action-btn wishlist-btn" (click)="addToWishlistFromCard(similarProduct)">
+                <i class="far fa-heart"></i>
+                Favoris
+              </button>
+              <button class="action-btn cart-btn" (click)="addSimilarToCart(similarProduct)">
+                <i class="fas fa-shopping-cart"></i>
+                Panier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
