@@ -2,7 +2,7 @@
     <div class="container">
         <div class="profile-section">
             <div class="profile-card">
-                <!-- Avatar -->
+                
                 <div class="avatar" (click)="openAvatarModal()">
                     {{ userProfile!.firstName[0] }} {{ userProfile!.lastName[0] }}
                 </div>
@@ -18,7 +18,7 @@
                 
                 <div class="divider"></div>
                 
-                <!-- Actions du profil -->
+              
                 <div class="profile-actions">
                     <button class="action-btn" (click)="openEditModal()">
                         <div class="action-icon">
@@ -54,9 +54,7 @@
         </div>
     </div>
 
-    <!-- Modals -->
-    
-    <!-- Modal Édition du profil -->
+
     <div class="modal-overlay" *ngIf="showEditModal">
         <div class="modal">
             <div class="modal-header">
@@ -82,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Modal Préférences olfactives -->
+
     <div class="modal-overlay" *ngIf="showPreferencesModal">
         <div class="modal">
             <div class="modal-header">
@@ -108,7 +106,7 @@
         </div>
     </div>
 
-    <!-- Modal Paramètres de notification -->
+  
     <div class="modal-overlay" *ngIf="showNotificationsModal">
         <div class="modal">
             <div class="modal-header">
@@ -134,7 +132,7 @@
         </div>
     </div>
 
-    <!-- Modal Avatar -->
+
     <div class="modal-overlay" *ngIf="showAvatarModal">
         <div class="modal">
             <div class="modal-header">

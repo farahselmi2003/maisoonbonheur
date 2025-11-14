@@ -35,8 +35,7 @@ export class LoginComponent {
 
     try {
       const user = await firstValueFrom(this.jsonServerService.signIn(this.email, this.password));
-      // À ce stade, le service a déjà stocké l'utilisateur dans localStorage
-      // et mis à jour le BehaviorSubject. On peut rediriger.
+
       if (user) {
         this.router.navigate(['/']);
       }

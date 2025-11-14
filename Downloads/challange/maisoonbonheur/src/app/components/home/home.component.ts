@@ -20,8 +20,8 @@ import { JsonServerService } from '../../services/json-server';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   categories: any[] = [];
-  featuredPerfumes: any[] = []; // AJOUTÉ: Parfums vedettes
-  popularPerfumes: any[] = []; // AJOUTÉ: Parfums populaires
+  featuredPerfumes: any[] = []; 
+  popularPerfumes: any[] = []; 
   wishlistStatus: { [key: number]: boolean } = {};
   currentSlide = 0;
   loading = true;
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    // Charger les catégories
+  
     this.jsonServerService.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
@@ -73,13 +73,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Charger les parfums
+    
     this.jsonServerService.getPerfumes().subscribe({
       next: (perfumes) => {
-        // Filtrer les parfums vedettes (featured)
+        
         this.featuredPerfumes = perfumes.filter(p => p.is_featured).slice(0, 6);
         
-        // Filtrer les parfums populaires (rating élevé)
+       
         this.popularPerfumes = perfumes
           .filter(p => p.rating >= 4.0)
           .sort((a, b) => b.rating - a.rating)
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Méthode pour les favoris
+  
   toggleWishlist(perfume: any, event: Event) {
     event.stopPropagation();
     this.wishlistStatus[perfume.id] = !this.wishlistStatus[perfume.id];

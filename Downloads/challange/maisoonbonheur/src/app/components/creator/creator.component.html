@@ -5,7 +5,7 @@
     <div class="divider"></div>
   </div>
 
-  <!-- Message d'état -->
+
   <div *ngIf="message" 
        [class]="getMessageClass()"
        class="message">
@@ -13,7 +13,7 @@
   </div>
 
   <div class="creator-layout">
-    <!-- Section principale : Familles de notes -->
+
     <div class="families-grid">
       <div *ngFor="let family of families" class="family-card">
         <h2>{{ family }}</h2>
@@ -42,12 +42,11 @@
       </div>
     </div>
 
-    <!-- Sidebar : Résumé de la création -->
     <div class="summary">
       <h2>Votre création</h2>
 
       <div *ngIf="selectedNotes.length > 0; else emptyState" class="creation-details">
-        <!-- Notes sélectionnées -->
+   
         <div class="selected-notes">
           <h3>Notes sélectionnées :</h3>
           <ul class="notes-list">
@@ -72,7 +71,7 @@
           </ul>
         </div>
 
-        <!-- Aperçu du parfum -->
+
         <div class="creation-preview">
           <h3>Aperçu de votre parfum</h3>
           <div class="preview-details">
@@ -99,7 +98,7 @@
           </div>
         </div>
 
-        <!-- Bouton d'action principal -->
+   
         <div class="action-buttons">
           <button
             (click)="saveAndAddToCart()"

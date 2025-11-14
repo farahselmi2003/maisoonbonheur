@@ -6,7 +6,7 @@ export interface WishlistItem {
   name: string;
   price: number;
   image_url?: string;
-  // ✅ Supprimé les propriétés qui ne sont pas utilisées dans le composant
+
 }
 
 @Injectable({

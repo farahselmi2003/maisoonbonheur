@@ -76,7 +76,7 @@ export class JsonServerService {
     this.loadSession(); 
   }
 
-  // Categories
+
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.apiUrl}/categories`);
   }
@@ -85,7 +85,7 @@ export class JsonServerService {
     return this.http.get<Category>(`${this.apiUrl}/categories/${id}`);
   }
 
-  // Perfumes
+ 
   getPerfumes(params?: any): Observable<Perfume[]> {
     let url = `${this.apiUrl}/perfumes`;
     const queryParams = [];
@@ -121,7 +121,7 @@ export class JsonServerService {
 
     return this.http.get<Perfume[]>(url);
   }
-  // Creations
+
   getCreations(): Observable<Creation[]> {
     return this.http.get<Creation[]>(`${this.apiUrl}/creations`);
   }
@@ -142,7 +142,7 @@ export class JsonServerService {
     return this.http.get<Perfume[]>(`${this.apiUrl}/perfumes?q=${query}`);
   }
 
-  // Auth
+ 
   signIn(email: string, password: string): Observable<User> {
     return this.http.get<User[]>(`${this.apiUrl}/users?email=${email}&password=${password}`)
       .pipe(
@@ -155,7 +155,7 @@ export class JsonServerService {
           throw new Error('Utilisateur non trouvé');
         }),
         tap(user => {
-          // Persistance en localStorage pour garder la session
+          
           localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
         })
       );
@@ -195,13 +195,13 @@ export class JsonServerService {
         const user = JSON.parse(data) as User;
         this.currentUser$.next(user);
       } catch (_) {
-        // ignore malformed storage
+      
         localStorage.removeItem(this.STORAGE_KEY);
       }
     }
   }
 
-  // Reviews
+
   getReviews(perfumeId: number): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.apiUrl}/reviews?perfume_id=${perfumeId}`);
   }
@@ -209,9 +209,7 @@ export class JsonServerService {
   addReview(review: Omit<Review, 'id'>): Observable<Review> {
     return this.http.post<Review>(`${this.apiUrl}/reviews`, review);
   }
-  // Dans json-server.service.ts, ajoutez ces méthodes :
 
-// Address methods
 getAddresses(userId?: number): Observable<Address[]> {
   let url = `${this.apiUrl}/addresses`;
   if (userId) {

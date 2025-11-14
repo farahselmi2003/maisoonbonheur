@@ -39,7 +39,7 @@ export class RegisterComponent {
     this.loading = true;
     this.error = null;
     
-    // Validation basique
+
     if (!this.email || !this.password || !this.userData.firstName || !this.userData.lastName || !this.userData.address) {
       this.error = 'Veuillez remplir tous les champs obligatoires.';
       this.loading = false;
@@ -52,17 +52,17 @@ export class RegisterComponent {
       return;
     }
 
-    // Appel du service d'inscription
+   
     this.jsonServerService.register(this.email, this.password, this.userData).subscribe({
       next: (response) => {
-        // Succès de l'inscription
+ 
         console.log('Inscription réussie:', response);
         this.router.navigate(['/login'], { 
           queryParams: { registered: 'success' } 
         });
       },
       error: (err) => {
-        // Gestion des erreurs
+       
         console.error('Erreur lors de l\'inscription:', err);
         
         if (err.status === 409) {

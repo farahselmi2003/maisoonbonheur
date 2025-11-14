@@ -1,4 +1,4 @@
-// Variables modernes
+
 $primary: #2563eb;
 $primary-dark: #1d4ed8;
 $primary-light: #3b82f6;
@@ -25,12 +25,12 @@ $radius: 8px;
 $radius-lg: 12px;
 $radius-xl: 16px;
 
-// Fonction pour assombrir une couleur
+
 @function darken-color($color, $amount) {
   @return color-mix(in srgb, $color, black $amount);
 }
 
-// Mixins
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@ $radius-xl: 16px;
   transition: all 0.3s ease;
 }
 
-// Conteneur principal
+
 .product-detail-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -61,7 +61,7 @@ $radius-xl: 16px;
   }
 }
 
-// États de chargement et erreur
+
 .loading-state, .error-state {
   text-align: center;
   padding: 6rem 2rem;
@@ -128,7 +128,7 @@ $radius-xl: 16px;
   }
 }
 
-// Section principale du produit
+
 .main-product-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -141,7 +141,7 @@ $radius-xl: 16px;
   }
 }
 
-// Galerie d'images
+
 .image-gallery {
   .main-image {
     @include card;
@@ -189,7 +189,7 @@ $radius-xl: 16px;
   }
 }
 
-// Informations produit
+
 .product-info {
   .product-header {
     margin-bottom: 2rem;
@@ -385,7 +385,7 @@ $radius-xl: 16px;
   }
 }
 
-// Section Avis simple
+
 .reviews-simple {
   @include card;
   padding: 1rem 1.5rem;
@@ -562,7 +562,7 @@ $radius-xl: 16px;
   }
 }
 
-// Section Produits Similaires en Ligne
+
 .similar-products-row {
   margin-top: 3rem;
   padding-top: 2rem;
@@ -741,7 +741,7 @@ $radius-xl: 16px;
   100% { transform: rotate(360deg); }
 }
 
-// Responsive
+
 @media (max-width: 768px) {
   .main-product-section {
     gap: 2rem;

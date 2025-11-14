@@ -17,7 +17,7 @@ export class CartService {
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   public cart$ = this.cartSubject.asObservable();
 
-  // Méthodes pour la compatibilité avec le code existant
+ 
   getItemCount(): number {
     return this.getTotalItems();
   }
@@ -34,7 +34,7 @@ export class CartService {
     return this.getTotalPrice();
   }
 
-  // Méthodes principales
+
   addToCart(item: CartItem) {
     const existingItem = this.cartItems.find(cartItem => cartItem.id === item.id);
     

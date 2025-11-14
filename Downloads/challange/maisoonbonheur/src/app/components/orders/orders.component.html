@@ -16,13 +16,13 @@
     </div>
   </div>
 
-  <!-- Loading State -->
+
   <div *ngIf="loading && orders.length === 0" class="loading-spinner">
     <div class="spinner"></div>
     <p>Chargement de vos commandes...</p>
   </div>
 
-  <!-- Empty State -->
+
   <div *ngIf="!loading && orders.length === 0" class="empty-orders">
     <div class="empty-icon">
       <i class="fas fa-shopping-bag"></i>
@@ -35,12 +35,12 @@
     </button>
   </div>
 
-  <!-- Orders List -->
+ 
   <div *ngIf="!loading && orders.length > 0" class="orders-content">
     <div class="orders-list">
       <div *ngFor="let order of orders; trackBy: trackByOrderId" class="order-card">
         
-        <!-- Order Header -->
+       
         <div class="order-header">
           <div class="order-info">
             <h3 class="order-number">Commande #{{ order.id }}</h3>
@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <!-- Order Body -->
+       
         <div class="order-body">
           <div class="order-items-preview">
             <div *ngFor="let item of order.items.slice(0, 2)" class="preview-item">
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <!-- Order Footer -->
+       
         <div class="order-footer">
           <div class="shipping-info">
             <div class="shipping-address">

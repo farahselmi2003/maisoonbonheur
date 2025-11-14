@@ -65,7 +65,7 @@ export class OrderService {
   }
 
   getOrdersList(): Order[] {
-    return [...this.orders].reverse(); // Plus récent en premier
+    return [...this.orders].reverse(); 
   }
 
   createOrder(orderData: Partial<Order>): Order {

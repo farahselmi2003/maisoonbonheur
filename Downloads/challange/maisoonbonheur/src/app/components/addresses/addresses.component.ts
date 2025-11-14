@@ -29,7 +29,7 @@ export class AddressesComponent implements OnInit {
   }
 
   loadAddresses() {
-    // Données mockées pour le moment - vous pouvez remplacer par un appel API
+
     this.addresses = [
       {
         id: 1,
@@ -62,7 +62,7 @@ export class AddressesComponent implements OnInit {
   deleteAddress(id: number) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette adresse ?')) {
       this.addresses = this.addresses.filter(a => a.id !== id);
-      // Ici vous ajouterez l'appel API pour supprimer l'adresse
+
       console.log('Adresse supprimée:', id);
     }
   }
@@ -72,19 +72,19 @@ export class AddressesComponent implements OnInit {
       ...address,
       is_default: address.id === id
     }));
-    // Ici vous ajouterez l'appel API pour définir l'adresse par défaut
+   
     console.log('Adresse par défaut:', id);
   }
 
   editAddress(address: Address) {
-    // Implémentez la logique d'édition ici
+   
     console.log('Édition de l\'adresse:', address);
-    // Vous pouvez ouvrir un modal ou naviguer vers une page d'édition
+   
   }
 
   addNewAddress() {
-    // Implémentez l'ajout d'une nouvelle adresse
+
     console.log('Ajouter une nouvelle adresse');
-    // Vous pouvez ouvrir un modal ou naviguer vers une page de création
+   
   }
 }

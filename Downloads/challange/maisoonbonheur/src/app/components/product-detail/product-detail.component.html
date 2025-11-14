@@ -1,11 +1,10 @@
 <div class="product-detail-container">
-  <!-- État de chargement -->
+ 
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
     <p>Chargement du produit...</p>
   </div>
 
-  <!-- État d'erreur -->
   <div *ngIf="error && !loading" class="error-state">
     <div class="not-found-icon">
       <i class="fas fa-search"></i>
@@ -18,12 +17,12 @@
     </a>
   </div>
 
-  <!-- Contenu du produit -->
+
   <div *ngIf="product && !loading" class="product-content-wrapper">
-    <!-- Section principale : Image + Informations -->
+
     <div class="main-product-section">
       <div class="image-gallery">
-        <!-- Image principale -->
+   
         <div class="main-image">
           <img 
             [src]="product.images[selectedImageIndex]" 
@@ -32,7 +31,7 @@
           />
         </div>
 
-        <!-- Miniatures -->
+      
         <div class="thumbnails" *ngIf="product.images.length > 1">
           <div 
             *ngFor="let img of product.images; let i = index" 
@@ -46,13 +45,13 @@
       </div>
 
       <div class="product-info">
-        <!-- En-tête produit -->
+        
         <div class="product-header">
           <div class="product-category">Parfum de luxe</div>
           <h1 class="product-name">{{ product.name }}</h1>
           <p class="product-brand">{{ product.brand }}</p>
           
-          <!-- Rating -->
+      
           <div class="product-rating">
             <div class="stars">
               <span class="star" *ngFor="let star of getStarArray(); let i = index" 
@@ -66,7 +65,7 @@
           </div>
         </div>
 
-        <!-- Prix et stock -->
+      
         <div class="price-stock-section">
           <div class="price-section">
             <p class="product-price">{{ product.price }} <span class="currency">TND</span></p>
@@ -86,13 +85,13 @@
           </div>
         </div>
 
-        <!-- Description -->
+      
         <div class="product-description-section">
           <h3>Description</h3>
           <p class="product-description">{{ product.description }}</p>
         </div>
 
-        <!-- Caractéristiques -->
+    
         <div class="product-features" *ngIf="product.features?.length">
           <h3>Caractéristiques</h3>
           <div class="features-grid">
@@ -103,7 +102,6 @@
           </div>
         </div>
 
-        <!-- Section Avis simple -->
         <div class="reviews-simple" *ngIf="product">
           <div class="reviews-header">
             <h3>Avis clients</h3>
@@ -121,7 +119,7 @@
           </div>
         </div>
 
-        <!-- Sélecteur de quantité et ajout au panier -->
+       
         <div class="purchase-section">
           <div class="quantity-section">
             <span class="quantity-label">Quantité</span>
@@ -154,7 +152,7 @@
       </div>
     </div>
 
-    <!-- Section Produits Similaires en Ligne -->
+ 
     <div class="similar-products-row" *ngIf="similarProducts.length > 0">
       <div class="section-header">
         <h2 class="section-title">Vous aimerez aussi</h2>

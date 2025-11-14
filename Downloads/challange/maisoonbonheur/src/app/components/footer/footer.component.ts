@@ -17,18 +17,18 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // Initialisation du composant
+   
   }
 
   onNewsletterSubmit(): void {
     if (this.newsletterEmail && this.isValidEmail(this.newsletterEmail)) {
-      // Simulation d'envoi à l'API
+  
       console.log('Email inscrit à la newsletter:', this.newsletterEmail);
       
-      // Afficher un message de succès (à implémenter avec un service de notification)
+     
       this.showNotification('Merci pour votre inscription à notre newsletter!', 'success');
       
-      // Réinitialiser le champ
+    
       this.newsletterEmail = '';
     } else {
       this.showNotification('Veuillez entrer une adresse email valide', 'error');
@@ -41,11 +41,8 @@ export class FooterComponent implements OnInit {
   }
 
   private showNotification(message: string, type: 'success' | 'error'): void {
-    // À implémenter avec votre service de notification préféré
-    // Pour l'instant, on utilise un simple alert
+  
     alert(message);
     
-    // Exemple avec un service de notification :
-    // this.notificationService.show(message, type);
   }
 }

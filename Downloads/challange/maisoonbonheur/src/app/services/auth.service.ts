@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   register(user: User): { success: boolean; message: string } {
-    // Charger les utilisateurs à jour
+
     this.loadUsers();
     
     if (this.users.find(u => u.email === user.email)) {
@@ -65,7 +65,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): { success: boolean; message: string } {
-    // Charger les utilisateurs à jour
+  
     this.loadUsers();
     
     const user = this.users.find(u => u.email === email && u.password === password);
@@ -102,7 +102,7 @@ export class AuthService {
       return { success: false, message: 'Aucun utilisateur connecté.' };
     }
 
-    // Vérifier si l'email est déjà utilisé par un autre utilisateur
+    
     const emailExists = this.users.some(u => 
       u.email === updatedUser.email && u.email !== currentUser.email
     );
@@ -111,14 +111,14 @@ export class AuthService {
       return { success: false, message: 'Cet email est déjà utilisé.' };
     }
 
-    // Mettre à jour l'utilisateur dans la liste
+
     const userIndex = this.users.findIndex(u => u.email === currentUser.email);
     if (userIndex !== -1) {
       this.users[userIndex] = updatedUser;
       this.saveUsers();
     }
 
-    // Mettre à jour la session courante
+   
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedUser));
     this.currentUser$.next(updatedUser);
 

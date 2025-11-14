@@ -21,8 +21,7 @@ export class WishlistComponent implements OnInit {
 
   ngOnInit() {
     this.loadWishlist();
-    
-    // S'abonner aux changements de la wishlist
+   
     this.wishlistService.getWishlist().subscribe(items => {
       this.wishlistItems = items;
     });

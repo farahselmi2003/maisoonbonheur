@@ -11,22 +11,22 @@ import { AuthService, User } from '../../services/auth.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  // Données du profil utilisateur
+
   userProfile: User | null = null;
 
-  // États des modals
+
   showEditModal = false;
   showPreferencesModal = false;
   showNotificationsModal = false;
   showAvatarModal = false;
 
-  // Données temporaires pour les modals
+
   tempName = '';
   tempEmail = '';
   tempInitials = '';
   tempAddress = '';
 
-  // Préférences olfactives
+
   olfactoryPreferences = [
     { name: 'Notes florales', selected: true },
     { name: 'Notes boisées', selected: false },
@@ -35,7 +35,7 @@ export class ProfileComponent {
     { name: 'Notes fruitées', selected: true }
   ];
 
-  // Paramètres de notification
+  
   notificationSettings = [
     { name: 'Nouveaux produits', enabled: true },
     { name: 'Promotions', enabled: true },
@@ -53,7 +53,7 @@ export class ProfileComponent {
     }
   }
 
-  // Ouvrir les modals
+
   openEditModal() {
     this.showEditModal = true;
   }
@@ -70,7 +70,7 @@ export class ProfileComponent {
     this.showAvatarModal = true;
   }
 
-  // Fermer tous les modals
+
   closeAllModals() {
     this.showEditModal = false;
     this.showPreferencesModal = false;
@@ -78,7 +78,7 @@ export class ProfileComponent {
     this.showAvatarModal = false;
   }
 
-  // Sauvegarder les modifications
+  
   saveProfile() {
     if (this.userProfile) {
       const [firstName, ...lastNameArr] = this.tempName.split(' ');
@@ -112,13 +112,12 @@ export class ProfileComponent {
 
   saveAvatar() {
     if (this.tempInitials.length === 2 && this.userProfile) {
-      // Ici, tu pourrais ajouter la logique pour sauvegarder les initiales dans le profil si tu ajoutes ce champ au modèle User
+
       this.closeAllModals();
     }
   }
 
-  // Basculer les notifications
+
   toggleNotifications() {
-    // Ici, tu pourrais ajouter la logique pour gérer les notifications dans le modèle User si tu ajoutes ce champ
   }
 }

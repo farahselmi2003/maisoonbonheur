@@ -1,7 +1,7 @@
 # Maison Bonheur
 
 ## Description du projet
-Maison Bonheur est une application web de vente de parfums, permettant aux utilisateurs de parcourir un catalogue, filtrer et trier les produits, gérer leur panier, s’inscrire, se connecter, consulter leur profil, et passer commande. L’application propose également des fonctionnalités de wishlist et d’administration des utilisateurs.
+Maison Bonheur est une application web de vente de parfums, permettant aux utilisateurs de parcourir un catalogue, filtrer et trier les produits, gérer leur panier, s’inscrire, se connecter, consulter leur profil, et passer commande. L’application propose également des fonctionnalités de wishlist, gestion des adresses et suivi des commandes.
 
 ## Technologies utilisées
 - Angular 20
@@ -55,11 +55,20 @@ maison-bonheur/
 - Authentification (connexion, inscription)
 - Gestion du panier et passage de commande
 - Wishlist (liste de souhaits)
-- Profil utilisateur
+- Profil utilisateur (consultation et modification via AuthService)
 - Navigation entre les pages
 - Persistance de session utilisateur via localStorage
 - Interaction avec une API simulée (JSON Server)
 - Interface responsive et moderne
+
+## Gestion du profil utilisateur
+- Les données du profil sont gérées via le service `AuthService`.
+- Le composant `ProfileComponent` utilise `AuthService` pour afficher et modifier les informations de l’utilisateur connecté (nom, prénom, email, adresse).
+- Les modifications du profil sont persistées dans le localStorage et synchronisées dans toute l’application.
+
+## Sécurité et persistance
+- La session utilisateur est conservée dans le localStorage pour permettre une reconnexion automatique.
+- Les routes sensibles (profil, commandes, adresses) sont protégées par un guard d’authentification.
 
 ---
 Pour toute question ou amélioration, contactez l’équipe de développement.

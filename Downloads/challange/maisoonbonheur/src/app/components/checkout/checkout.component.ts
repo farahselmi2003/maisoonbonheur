@@ -99,7 +99,7 @@ export class CheckoutComponent implements OnInit {
     if (this.checkoutForm.valid && this.cartItems.length > 0) {
       this.isLoading = true;
 
-      // Simuler un traitement de paiement
+      
       setTimeout(() => {
         const orderData = {
           total: this.total,

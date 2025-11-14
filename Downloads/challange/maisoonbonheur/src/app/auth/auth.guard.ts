@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { JsonServerService } from '../services/json-server'; // Import correct
+import { JsonServerService } from '../services/json-server'; 
 
 export const authGuard: CanActivateFn = () => {
   const router = inject(Router);

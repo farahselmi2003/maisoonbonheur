@@ -1,10 +1,10 @@
-/* cart.component.css - Design cohérent avec le catalogue */
+
 .cart-container {
   min-height: 100vh;
   background: #f8f9fa;
 }
 
-/* Header */
+
 .cart-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -28,8 +28,6 @@
     opacity: 0.9;
   }
 }
-
-/* Main Layout */
 .cart-main {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -44,7 +42,7 @@
   }
 }
 
-/* Cart Items */
+
 .cart-items {
   background: white;
   border-radius: 12px;
@@ -154,7 +152,7 @@
   }
 }
 
-/* Cart Actions */
+
 .cart-actions {
   display: flex;
   gap: 1rem;
@@ -191,7 +189,7 @@
   }
 }
 
-/* Cart Summary */
+
 .cart-summary {
   background: white;
   border-radius: 12px;
@@ -280,7 +278,7 @@
   }
 }
 
-/* Empty Cart */
+
 .empty-cart {
   text-align: center;
   padding: 4rem 2rem;
@@ -320,7 +318,7 @@
   }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .cart-main {
     grid-template-columns: 1fr;
@@ -385,7 +383,7 @@
   }
 }
 
-/* Loading State */
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -415,7 +413,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Success Message */
+
 .success-message {
   background: #48bb78;
   color: white;
@@ -437,7 +435,7 @@
   }
 }
 
-/* Focus States */
+
 button:focus,
 input:focus {
   outline: 2px solid #667eea;

@@ -1,6 +1,6 @@
 <header class="header">
   <div class="header-container">
-    <!-- Logo et menu mobile -->
+   
     <div class="header-left">
       <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
         <i class="fas fa-bars"></i>
@@ -11,14 +11,13 @@
       </a>
     </div>
 
-    <!-- Navigation principale -->
+
     <nav class="nav-menu" [class.active]="showMobileMenu">
       <a routerLink="/" class="nav-link">Accueil</a>
       <a routerLink="/catalog" class="nav-link">Catalogue</a>
       <a routerLink="/creator" class="nav-link">Créateur</a>
     </nav>
 
-    <!-- Barre de recherche -->
     <div class="search-container">
       <div class="search-box">
         <input 
@@ -37,7 +36,7 @@
         </button>
       </div>
 
-      <!-- Résultats de recherche -->
+   
       <div class="search-results" *ngIf="showSearchResults && searchResults.length > 0">
         <div class="results-header">
           <h4>Résultats de recherche</h4>
@@ -64,20 +63,19 @@
       </div>
     </div>
 
-    <!-- Actions utilisateur -->
+
     <div class="header-actions">
-      <!-- Favoris -->
+    
       <a routerLink="/wishlist" class="action-btn">
         <i class="far fa-heart"></i>
       </a>
 
-      <!-- Panier -->
+
       <a routerLink="/panier" class="action-btn cart-btn">
         <i class="fas fa-shopping-cart"></i>
         <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
       </a>
 
-      <!-- Profil utilisateur -->
       <div class="profile-dropdown">
         <button class="action-btn" (click)="toggleProfileMenu()">
           <i class="fas fa-user"></i>
@@ -85,7 +83,7 @@
         <div class="dropdown-menu" [class.show]="showProfileMenu">
           <div *ngIf="user; else loginTemplate">
             <div class="user-info">
-              <!-- Utilisation de displayName au lieu de user.name -->
+             
               <strong>{{ displayName }}</strong>
               <small>{{ user.email }}</small>
             </div>

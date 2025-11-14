@@ -1,5 +1,4 @@
 <div class="cart-container">
-  <!-- Header -->
   <div class="cart-header">
     <div class="header-content">
       <h1 class="page-title">Mon Panier</h1>
@@ -9,9 +8,8 @@
     </div>
   </div>
 
-  <!-- Main Content -->
+
   <div class="cart-main">
-    <!-- Cart Items -->
     <div class="cart-items" *ngIf="items.length > 0; else emptyCart">
       <div class="cart-item" *ngFor="let item of items">
         <div class="item-image">
@@ -43,7 +41,7 @@
         </button>
       </div>
 
-      <!-- Cart Actions -->
+
       <div class="cart-actions">
         <button class="action-btn secondary" (click)="clear()">
           Vider le panier
@@ -54,7 +52,7 @@
       </div>
     </div>
 
-    <!-- Cart Summary -->
+
     <div class="cart-summary" *ngIf="items.length > 0">
       <h3 class="summary-title">Récapitulatif</h3>
       
@@ -86,7 +84,6 @@
     </div>
   </div>
 
-  <!-- Empty Cart -->
   <ng-template #emptyCart>
     <div class="empty-cart">
       <h2 class="empty-title">Votre panier est vide</h2>

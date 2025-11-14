@@ -42,7 +42,7 @@ export class CreatorComponent implements OnInit {
   loading = false;
   message = '';
 
-  // Propriétés calculées pour l'affichage
+
   currentSeason: string = '';
   currentMood: string = '';
   averageIntensity: number = 0;
@@ -126,7 +126,7 @@ export class CreatorComponent implements OnInit {
     return this.selectedNotes.reduce((total, note) => total + note.intensity, 0) / this.selectedNotes.length;
   }
 
-  // MÉTHODE PRINCIPALE - Enregistrer et ajouter au panier
+
   saveAndAddToCart() {
     if (this.selectedNotes.length === 0) {
       this.showMessage('⚠️ Veuillez sélectionner au moins une note.', 'warning');
@@ -136,7 +136,7 @@ export class CreatorComponent implements OnInit {
     this.loading = true;
     this.showMessage('Création de votre parfum en cours...', 'info');
 
-    // Créer l'objet création
+
     const creationId = Date.now().toString();
     const creationName = this.generateCreationName();
     const creationPrice = this.calculateCreationPrice();
@@ -145,7 +145,7 @@ export class CreatorComponent implements OnInit {
       id: creationId,
       created_at: new Date().toISOString(),
       notes: this.selectedNotes.map(n => n.name),
-      note_objects: this.selectedNotes, // Garder les objets complets pour référence
+      note_objects: this.selectedNotes, 
       families: Array.from(new Set(this.selectedNotes.map(n => n.family))),
       intensity: Math.round(this.getAverageIntensity()),
       season: this.currentSeason,
@@ -158,7 +158,7 @@ export class CreatorComponent implements OnInit {
       description: this.generateCreationDescription()
     };
 
-    // Essayer d'utiliser le service JSON Server, sinon utiliser le localStorage
+   
     try {
       this.jsonServerService.addCreation(creation).subscribe({
         next: () => {
@@ -176,38 +176,38 @@ export class CreatorComponent implements OnInit {
   }
 
   private handleCreationSuccess(creation: any) {
-    // Sauvegarder la création
+
     this.saveToLocalStorage(creation);
     
-    // Ajouter au panier
+
     this.addCreationToCart(creation);
     
     this.loading = false;
     this.showMessage('✅ Votre création a été enregistrée et ajoutée au panier !', 'success');
     
-    // Rediriger vers le panier après 2 secondes
+   
     setTimeout(() => {
       this.router.navigate(['/cart']);
     }, 2000);
   }
 
   private handleCreationFallback(creation: any) {
-    // Sauvegarder dans localStorage
+   
     this.saveToLocalStorage(creation);
     
-    // Ajouter au panier
+ 
     this.addCreationToCart(creation);
     
     this.loading = false;
     this.showMessage('✅ Votre création a été enregistrée et ajoutée au panier !', 'success');
     
-    // Rediriger vers le panier après 2 secondes
+  
     setTimeout(() => {
       this.router.navigate(['/cart']);
     }, 2000);
   }
 
-  // Méthode pour ajouter la création au panier
+ 
   private addCreationToCart(creation: any) {
     const cartItem = {
       id: creation.id,
@@ -228,7 +228,7 @@ export class CreatorComponent implements OnInit {
     console.log('Création ajoutée au panier:', cartItem);
   }
 
-  // Méthode pour générer un nom attrayant pour la création
+
   private generateCreationName(): string {
     if (this.selectedNotes.length === 0) return 'Parfum Unique';
     
@@ -250,7 +250,7 @@ export class CreatorComponent implements OnInit {
     return names[Math.floor(Math.random() * names.length)];
   }
 
-  // Méthode pour générer une description de la création
+
   private generateCreationDescription(): string {
     if (this.selectedNotes.length === 0) return 'Votre création personnalisée';
     
@@ -258,7 +258,7 @@ export class CreatorComponent implements OnInit {
     return `Une fragrance ${this.currentMood.toLowerCase()} aux notes de ${notesList}. Parfait pour la saison ${this.currentSeason.toLowerCase()}.`;
   }
 
-  // Méthode pour calculer le prix en fonction des notes sélectionnées
+
   private calculateCreationPrice(): number {
     const basePrice = 80;
     const notesPrice = this.selectedNotes.reduce((total, note) => total + (note.price || 15), 0);
@@ -267,7 +267,7 @@ export class CreatorComponent implements OnInit {
     return Math.round((basePrice + notesPrice) * intensityMultiplier);
   }
 
-  // Méthode pour sauvegarder dans le localStorage
+ 
   private saveToLocalStorage(creation: any) {
     try {
       const existingCreations = JSON.parse(localStorage.getItem('perfumeCreations') || '[]');
@@ -279,7 +279,7 @@ export class CreatorComponent implements OnInit {
     }
   }
 
-  // Méthode pour afficher les messages
+
   private showMessage(text: string, type: 'success' | 'warning' | 'info' | 'error') {
     this.message = text;
     setTimeout(() => {
@@ -287,7 +287,7 @@ export class CreatorComponent implements OnInit {
     }, 3000);
   }
 
-  // Méthodes pour les classes CSS
+  
   getMessageClass(): string {
     if (this.message.includes('✅') || this.message.includes('🛒')) return 'success';
     if (this.message.includes('❌') || this.message.includes('⚠️') || this.message.includes('❗')) return 'warning';
@@ -310,17 +310,17 @@ export class CreatorComponent implements OnInit {
     return 'low';
   }
 
-  // Méthode pour obtenir les notes par famille (utilisée dans le template)
+
   getNotesByFamily(family: string): Note[] {
     return this.availableNotes.filter(note => note.family === family);
   }
 
-  // Méthode pour retirer une note (utilisée dans le template)
+
   removeNote(note: Note) {
     this.toggleNoteSelection(note);
   }
 
-  // Méthode pour réinitialiser la sélection
+
   resetSelection() {
     this.selectedNotes = [];
     this.updatePreview();

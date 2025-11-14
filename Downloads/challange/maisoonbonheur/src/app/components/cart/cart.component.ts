@@ -1,4 +1,4 @@
-// cart.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -15,7 +15,7 @@ import { CartService, CartItem } from '../../services/cart.service';
 export class CartComponent implements OnInit {
   items: CartItem[] = [];
   subtotal = 0;
-  shipping = 7; // Frais de livraison fixes à 7 TND
+  shipping = 7; 
   total = 0;
 
   constructor(

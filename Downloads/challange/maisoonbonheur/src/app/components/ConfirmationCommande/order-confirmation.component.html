@@ -1,6 +1,6 @@
 <div class="confirmation-container">
   <div class="confirmation-content">
-    <!-- En-tête de confirmation -->
+
     <div class="confirmation-header">
       <div class="success-icon">
         <i class="fas fa-check-circle"></i>
@@ -11,7 +11,7 @@
       </p>
     </div>
 
-    <!-- Résumé de la commande -->
+
     <div class="order-summary-card" *ngIf="order">
       <div class="summary-header">
         <div class="order-info">
@@ -31,7 +31,7 @@
       </div>
 
       <div class="summary-body">
-        <!-- Articles commandés -->
+
         <div class="ordered-items">
           <h4>Articles commandés</h4>
           <div *ngFor="let item of order.items" class="ordered-item">
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <!-- Informations de livraison -->
+
         <div class="delivery-info">
           <div class="info-section">
             <h4>
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <!-- Actions -->
+
     <div class="confirmation-actions">
       <button class="btn-primary" (click)="printOrder()">
         <i class="fas fa-print"></i>
@@ -95,7 +95,7 @@
       </button>
     </div>
 
-    <!-- Informations de suivi -->
+
     <div class="tracking-info">
       <h3>Suivi de votre commande</h3>
       <p>

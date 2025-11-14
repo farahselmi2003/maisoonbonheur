@@ -26,9 +26,8 @@
 
   <div class="checkout-content">
     <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
-      <!-- Colonne gauche - Formulaire -->
       <div class="form-column">
-        <!-- Adresse de livraison -->
+    
         <div class="form-section">
           <h3 class="section-title">
             <i class="fas fa-truck"></i>
@@ -96,7 +95,7 @@
           </div>
         </div>
 
-        <!-- Mode de livraison -->
+     
         <div class="form-section">
           <h3 class="section-title">
             <i class="fas fa-shipping-fast"></i>
@@ -116,7 +115,6 @@
           </div>
         </div>
 
-        <!-- Mode de paiement -->
         <div class="form-section">
           <h3 class="section-title">
             <i class="fas fa-credit-card"></i>
@@ -130,7 +128,7 @@
             </label>
           </div>
 
-          <!-- Détails carte de crédit -->
+       
           <div *ngIf="checkoutForm.get('paymentMethod')?.value === 'card'" formGroupName="cardDetails" class="card-details">
             <div class="form-group">
               <label for="cardName">Nom sur la carte *</label>
@@ -167,7 +165,7 @@
           </div>
         </div>
 
-        <!-- Conditions générales -->
+       
         <div class="form-section">
           <label class="terms-agreement">
             <input type="checkbox" formControlName="agreeToTerms">
@@ -180,7 +178,7 @@
         </div>
       </div>
 
-      <!-- Colonne droite - Récapitulatif -->
+     
       <div class="summary-column">
         <div class="order-summary">
           <h3 class="summary-title">Récapitulatif de la commande</h3>

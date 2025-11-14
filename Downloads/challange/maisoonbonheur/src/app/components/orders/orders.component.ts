@@ -28,7 +28,7 @@ export class OrdersComponent implements OnInit {
 
   private loadOrders(): void {
     this.loading = true;
-    // Simuler un appel API ou utiliser le service
+    
     setTimeout(() => {
       this.orders = this.orderService.getOrdersList().reverse();
       this.loading = false;
@@ -70,26 +70,26 @@ export class OrdersComponent implements OnInit {
   reorder(order: Order): void {
     this.reordering[order.id] = true;
     
-    // Ajouter tous les articles de la commande au panier
+    
     order.items.forEach((item: OrderItem) => {
       const cartItem = {
-        id: item.id, // Utiliser item.id au lieu de item.productId
+        id: item.id, 
         name: item.name,
         price: item.price,
         quantity: item.quantity,
         image: item.image_url
       };
       
-      // Appeler addToCart avec un seul argument
+    
       this.cartService.addToCart({ ...cartItem, image_url: cartItem.image || 'assets/images/default-perfume.jpg' });
     });
 
-    // Simulation d'un délai pour l'UI
+   
     setTimeout(() => {
       this.reordering[order.id] = false;
       this.showSuccess(`${order.items.length} article(s) ajouté(s) au panier !`);
       
-      // Optionnel : Redirection vers le panier après un délai
+ 
       setTimeout(() => {
         this.router.navigate(['/cart']);
       }, 1500);
@@ -104,7 +104,7 @@ export class OrdersComponent implements OnInit {
     return order.id;
   }
 
-  // Méthode pour formater l'adresse
+ 
   formatAddress(address: any): string {
     if (!address) return 'Adresse non disponible';
     
@@ -119,12 +119,12 @@ export class OrdersComponent implements OnInit {
     return parts.join(', ');
   }
 
-  // Méthode pour gérer les erreurs d'image
+  
   handleImageError(event: any): void {
     event.target.src = 'assets/images/default-perfume.jpg';
   }
 
-  // Méthode pour obtenir le texte de la méthode de paiement
+
   getPaymentMethodText(method: string): string {
     switch (method) {
       case 'credit_card': return 'Carte de crédit';
@@ -135,11 +135,10 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  // Méthode de remplacement pour ToastService
+ 
   private showSuccess(message: string): void {
-    // Vous pouvez implémenter un système de notification simple ici
+  
     console.log('Success:', message);
-    // Ou utiliser alert() temporairement
-    // alert(message);
+  
   }
 }

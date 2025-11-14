@@ -2,7 +2,7 @@
   min-height: 100vh;
 }
 
-/* Hero Carousel - Garder le même style */
+
 .hero-carousel {
   position: relative;
   height: 70vh;
@@ -135,7 +135,7 @@
   }
 }
 
-/* Sections communes */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -166,7 +166,7 @@
   margin-bottom: 3rem;
 }
 
-/* Categories Section */
+
 .categories-section {
   padding: 5rem 0;
   background: #f8f9fa;
@@ -215,13 +215,13 @@
   font-size: 0.9rem;
 }
 
-/* Featured Section */
+
 .featured-section {
   padding: 5rem 0;
   background: white;
 }
 
-/* Popular Section */
+
 .popular-section {
   padding: 5rem 0;
   background: #fffaf0;
@@ -421,7 +421,6 @@
   }
 }
 
-/* View All Section */
 .view-all-section {
   padding: 3rem 0;
   background: #f8f9fa;
@@ -461,7 +460,7 @@
   }
 }
 
-/* Creator Promo Section */
+
 .creator-promo {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -516,7 +515,7 @@
   }
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .slide-title {
     font-size: 2rem;

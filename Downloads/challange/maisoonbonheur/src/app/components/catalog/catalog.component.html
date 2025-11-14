@@ -1,5 +1,4 @@
 <div class="catalog-container">
-  <!-- Notification -->
   <div *ngIf="showNotification" class="notification" [class.show]="showNotification">
     <div class="notification-content">
       <i class="fas fa-check-circle"></i>
@@ -7,7 +6,6 @@
     </div>
   </div>
 
-  <!-- Header -->
   <header class="catalog-header">
     <div class="header-content">
       <h1 class="page-title">{{ selectedCategoryId ? getCategoryName(selectedCategoryId) : 'Notre Collection' }}</h1>
@@ -17,9 +15,8 @@
     </div>
   </header>
 
-  <!-- Main Content -->
+
   <div class="catalog-main">
-    <!-- Filters Sidebar -->
     <aside class="filters-sidebar">
       <div class="filters-header">
         <h3>Filtres</h3>
@@ -29,7 +26,7 @@
         </button>
       </div>
 
-      <!-- Catégories -->
+    
       <div class="filter-group">
         <h4>Catégories</h4>
         <div class="category-list">
@@ -47,7 +44,7 @@
         </div>
       </div>
 
-      <!-- Prix -->
+   
       <div class="filter-group">
         <h4>Prix (TND)</h4>
         <div class="price-inputs">
@@ -64,7 +61,7 @@
         </div>
       </div>
 
-      <!-- Note -->
+      
       <div class="filter-group">
         <h4>Note minimale</h4>
         <div class="rating-options-simple">
@@ -86,9 +83,8 @@
       </div>
     </aside>
 
-    <!-- Products Section -->
+  
     <main class="products-section">
-      <!-- Sort Bar -->
       <div class="sort-bar">
         <div class="sort-controls">
           <label>Trier par:</label>
@@ -105,13 +101,13 @@
         </div>
       </div>
 
-      <!-- Loading -->
+ 
       <div *ngIf="loading && perfumes.length === 0" class="loading-container">
         <div class="loading-spinner"></div>
         <p>Chargement des parfums...</p>
       </div>
 
-      <!-- Products Grid -->
+ 
       <div *ngIf="perfumes.length > 0" class="products-grid">
         <div class="product-card" *ngFor="let perfume of perfumes" (click)="goToProduct(perfume.id)">
           <div class="product-image">
@@ -152,8 +148,7 @@
           </div>
         </div>
       </div>
-
-      <!-- Load More -->
+      
       <div *ngIf="!loading && !endReached && perfumes.length > 0" class="load-more-container">
         <button class="load-more-btn" (click)="loadMore()">
           <i class="fas fa-plus"></i>
@@ -161,7 +156,7 @@
         </button>
       </div>
 
-      <!-- No Results -->
+     
       <div *ngIf="!loading && perfumes.length === 0" class="no-results">
         <div class="no-results-content">
           <i class="fas fa-search"></i>
