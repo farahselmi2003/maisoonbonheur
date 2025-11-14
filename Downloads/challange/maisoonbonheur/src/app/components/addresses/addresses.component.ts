@@ -8,49 +8,16 @@ export interface Address {
   city: string;
   postal_code: string;
   user_id: number;
+  is_default?: boolean;
+  name?: string;
 }
 
 @Component({
   selector: 'app-addresses',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="addresses-container">
-      <h2>Mes Adresses</h2>
-      <div class="addresses-list">
-        <div *ngFor="let address of addresses" class="address-card">
-          <p><strong>{{ address.street }}</strong></p>
-          <p>{{ address.city }}, {{ address.postal_code }}</p>
-          <button (click)="deleteAddress(address.id)">Supprimer</button>
-        </div>
-        <p *ngIf="addresses.length === 0">Aucune adresse enregistrée</p>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .addresses-container {
-      padding: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .addresses-list {
-      margin-top: 20px;
-    }
-    .address-card {
-      background-color: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    button {
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  `]
+  templateUrl: './addresses.component.html',
+  styleUrls: ['./addresses.component.scss']
 })
 export class AddressesComponent implements OnInit {
   addresses: Address[] = [];
@@ -58,26 +25,66 @@ export class AddressesComponent implements OnInit {
   constructor(private jsonServerService: JsonServerService) {}
 
   async ngOnInit() {
-    // Données mockées pour le moment
+    this.loadAddresses();
+  }
+
+  loadAddresses() {
+    // Données mockées pour le moment - vous pouvez remplacer par un appel API
     this.addresses = [
       {
         id: 1,
         street: '123 Rue de la Parfumerie',
-        city: 'Paris',
+        city: 'tunis',
         postal_code: '75001',
-        user_id: 1
+        user_id: 1,
+        is_default: true,
+        name: 'Domicile'
       },
       {
         id: 2,
         street: '456 Avenue des Fleurs',
-        city: 'Lyon',
+        city: 'manouba',
         postal_code: '69001',
-        user_id: 1
+        user_id: 1,
+        name: 'Bureau'
+      },
+      {
+        id: 3,
+        street: '789 Boulevard des Parfums',
+        city: 'beja',
+        postal_code: '13001',
+        user_id: 1,
+        name: 'Chez mes parents'
       }
     ];
   }
 
   deleteAddress(id: number) {
-    this.addresses = this.addresses.filter(a => a.id !== id);
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette adresse ?')) {
+      this.addresses = this.addresses.filter(a => a.id !== id);
+      // Ici vous ajouterez l'appel API pour supprimer l'adresse
+      console.log('Adresse supprimée:', id);
+    }
+  }
+
+  setDefaultAddress(id: number) {
+    this.addresses = this.addresses.map(address => ({
+      ...address,
+      is_default: address.id === id
+    }));
+    // Ici vous ajouterez l'appel API pour définir l'adresse par défaut
+    console.log('Adresse par défaut:', id);
+  }
+
+  editAddress(address: Address) {
+    // Implémentez la logique d'édition ici
+    console.log('Édition de l\'adresse:', address);
+    // Vous pouvez ouvrir un modal ou naviguer vers une page d'édition
+  }
+
+  addNewAddress() {
+    // Implémentez l'ajout d'une nouvelle adresse
+    console.log('Ajouter une nouvelle adresse');
+    // Vous pouvez ouvrir un modal ou naviguer vers une page de création
   }
 }

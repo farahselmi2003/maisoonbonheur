@@ -16,7 +16,6 @@ import { JsonServerService, Category, Perfume } from '../../services/json-server
 })
 export class CatalogComponent implements OnInit, OnDestroy {
   perfumes: Perfume[] = [];
-  categoryCollections: { category: Category; perfumes: Perfume[] }[] = [];
   categories: Category[] = [];
 
   selectedCategoryId: number | null = null;
@@ -34,10 +33,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
   loading = false;
   starArray = [1, 2, 3, 4, 5];
 
-  // État des favoris pour chaque produit
   wishlistStatus: { [key: number]: boolean } = {};
 
-  // Notification
   showNotification = false;
   notificationMessage = '';
   notificationTimer: any;
@@ -72,6 +69,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
   }
 
+  isNewPerfume(perfume: Perfume): boolean {
+    return perfume.id >= 15;
+  }
+
   private showCartNotification(message: string): void {
     this.notificationMessage = message;
     this.showNotification = true;
@@ -86,25 +87,16 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   private loadWishlistStatus(): void {
-    // Initialiser le statut des favoris pour tous les produits chargés
     this.updateAllWishlistStatus();
     
-    // S'abonner aux changements de la wishlist
     this.wishlistService.getWishlist().subscribe(wishlist => {
       this.updateAllWishlistStatus();
     });
   }
 
   private updateAllWishlistStatus(): void {
-    // Mettre à jour tous les produits actuellement chargés
     this.perfumes.forEach(perfume => {
       this.wishlistStatus[perfume.id] = this.wishlistService.isInWishlist(perfume.id);
-    });
-    
-    this.categoryCollections.forEach(collection => {
-      collection.perfumes.forEach(perfume => {
-        this.wishlistStatus[perfume.id] = this.wishlistService.isInWishlist(perfume.id);
-      });
     });
   }
 
@@ -139,9 +131,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
       next: (data) => {
         if (data) {
           this.categories = data;
-          if (!this.selectedCategoryId) {
-            this.loadCategoryCollections(true);
-          }
         }
       },
       error: (error) => {
@@ -150,7 +139,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Méthode pour basculer les favoris
   toggleWishlist(perfume: Perfume, event: Event): void {
     event.stopPropagation();
     
@@ -165,21 +153,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Méthode pour ajouter aux favoris et rediriger (gardée pour compatibilité)
-  addToWishlistAndRedirect(perfume: Perfume, event: Event): void {
-    event.stopPropagation();
-    
-    if (!this.isInWishlist(perfume.id)) {
-      this.wishlistService.addToWishlist(perfume);
-      this.wishlistStatus[perfume.id] = true;
-      this.showCartNotification('Produit ajouté aux favoris');
-    }
-    
-    setTimeout(() => {
-      this.router.navigate(['/wishlist']);
-    }, 300);
-  }
-
   isInWishlist(perfumeId: number): boolean {
     return this.wishlistService.isInWishlist(perfumeId);
   }
@@ -191,7 +164,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
       this.maxPrice = tmp;
     }
     this.updateTrack();
-    this.updateUrl();
+  }
+
+  onPriceChange() {
+    this.updateTrack();
+    this.onFilterChange();
   }
 
   updateTrack() {
@@ -273,7 +250,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
           this.perfumes = reset ? data : [...this.perfumes, ...data];
           this.pageOffset += data.length;
           
-          // Charger le statut des favoris pour les nouveaux produits
           data.forEach(perfume => {
             this.wishlistStatus[perfume.id] = this.wishlistService.isInWishlist(perfume.id);
           });
@@ -318,7 +294,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
           this.perfumes = reset ? data : [...this.perfumes, ...data];
           this.pageOffset += data.length;
           
-          // Charger le statut des favoris pour les nouveaux produits
           data.forEach(perfume => {
             this.wishlistStatus[perfume.id] = this.wishlistService.isInWishlist(perfume.id);
           });
@@ -333,69 +308,34 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadCategoryCollections(reset = false) {
-    this.loading = true;
-    const collections: { category: Category; perfumes: Perfume[] }[] = [];
-    let completedRequests = 0;
-
-    if (this.categories.length === 0) {
-      this.loading = false;
-      return;
-    }
-
-    this.categories.forEach((cat) => {
-      const params: any = {
-        category_id: cat.id,
-        price_gte: this.minPrice,
-        price_lte: this.maxPrice,
-        _limit: 6
-      };
-
-      if (this.minRating !== null) {
-        params.rating_gte = this.minRating;
-      }
-
-      Object.assign(params, this.getSortParams());
-
-      this.jsonServerService.getPerfumes(params).subscribe({
-        next: (data) => {
-          if (data && data.length > 0) {
-            collections.push({ category: cat, perfumes: data });
-            
-            // Charger le statut des favoris
-            data.forEach(perfume => {
-              this.wishlistStatus[perfume.id] = this.wishlistService.isInWishlist(perfume.id);
-            });
-          }
-          completedRequests++;
-          
-          if (completedRequests === this.categories.length) {
-            this.categoryCollections = collections;
-            this.loading = false;
-          }
-        },
-        error: (error) => {
-          console.error('Error loading perfumes for category:', cat.id, error);
-          completedRequests++;
-          
-          if (completedRequests === this.categories.length) {
-            this.categoryCollections = collections;
-            this.loading = false;
-          }
-        }
-      });
-    });
-  }
-
   onCategoryChange(value: string | null) {
     const categoryId = value ? parseInt(value, 10) : null;
     this.selectedCategoryId = categoryId;
+    
+    this.perfumes = [];
+    this.pageOffset = 0;
+    this.endReached = false;
+    
+    if (this.selectedCategoryId) {
+      this.loadPerfumesByCategory(this.selectedCategoryId, true);
+    } else {
+      this.loadAllPerfumes(true);
+    }
+    
     this.updateUrl();
   }
 
   onFilterChange() {
+    this.perfumes = [];
     this.pageOffset = 0;
     this.endReached = false;
+    
+    if (this.selectedCategoryId) {
+      this.loadPerfumesByCategory(this.selectedCategoryId, true);
+    } else {
+      this.loadAllPerfumes(true);
+    }
+    
     this.updateUrl();
   }
 
@@ -415,7 +355,18 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.minRating = null;
     this.sortOption = null;
     this.updateTrack();
-    this.onFilterChange();
+    
+    this.perfumes = [];
+    this.pageOffset = 0;
+    this.endReached = false;
+    
+    if (this.selectedCategoryId) {
+      this.loadPerfumesByCategory(this.selectedCategoryId, true);
+    } else {
+      this.loadAllPerfumes(true);
+    }
+    
+    this.updateUrl();
   }
 
   private onScroll = () => {
@@ -466,11 +417,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   getTotalDisplayedProducts(): number {
-    if (this.selectedCategoryId) {
-      return this.perfumes.length;
-    } else {
-      return this.categoryCollections.reduce((total, collection) => total + collection.perfumes.length, 0);
-    }
+    return this.perfumes.length;
   }
 
   goToProduct(productId: number): void {

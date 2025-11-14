@@ -1,180 +1,149 @@
-// Variables
-$primary-color: #8B5FBF;
-$primary-light: #6C63FF;
-$secondary-color: #FF8BA0;
-$secondary-light: #FFC6C7;
-$success-color: #4ECDC4;
-$success-light: #67D7E5;
-$text-primary: #2D3748;
-$text-secondary: #718096;
-$border-color: #E2E8F0;
-$background-light: #F7FAFC;
-$background-dark: #CBD5E0;
-$white: #FFFFFF;
-$error-color: #FC8181;
+// Variables modernes
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+$success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+$glass-effect: rgba(255, 255, 255, 0.25);
+$glass-border: rgba(255, 255, 255, 0.18);
+$shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+$shadow-medium: 0 15px 35px rgba(0, 0, 0, 0.15);
+$shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.2);
 
-// Styles pour centrer la page complète
+// Reset et base
 .profile-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, $background-light 0%, $background-dark 100%);
   padding: 20px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-// Container principal centré
+// Container principal avec effet glassmorphism
 .container {
   width: 100%;
-  max-width: 480px;
-  background: $white;
+  max-width: 500px;
+  background: $glass-effect;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid $glass-border;
   border-radius: 24px;
-  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  box-shadow: $shadow-strong;
   overflow: hidden;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
-  }
 }
 
-// Header
-.header {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
-  color: $white;
-  padding: 35px 30px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: '🌸';
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 24px;
-    opacity: 0.7;
-  }
-
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-  }
-
-  p {
-    font-size: 16px;
-    opacity: 0.9;
-    margin: 0;
-    font-weight: 400;
-  }
-}
-
-// Section profil centrée
+// Section profil - directement sans header
 .profile-section {
-  padding: 40px 30px;
+  padding: 50px 40px 40px;
 
   .profile-card {
-    background: $white;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
-    padding: 35px;
+    padding: 40px 35px;
     text-align: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: $shadow-soft;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
 
-// Avatar
+// Avatar avec effet néomorphisme
 .avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+  background: $primary-gradient;
   margin: 0 auto 25px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: $white;
-  font-size: 42px;
+  color: white;
+  font-size: 2.5rem;
   font-weight: 700;
-  box-shadow: 0 12px 30px rgba($primary-color, 0.3);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    inset 0 -5px 15px rgba(0, 0, 0, 0.1),
+    inset 0 5px 15px rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border: 4px solid $white;
-  outline: 2px solid rgba($primary-color, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.3);
 
   &:hover {
     transform: scale(1.08) rotate(5deg);
-    box-shadow: 0 15px 40px rgba($primary-color, 0.4);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.3),
+      inset 0 -5px 15px rgba(0, 0, 0, 0.1),
+      inset 0 5px 15px rgba(255, 255, 255, 0.3);
   }
 
   &::before {
     content: '✏️';
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: $white;
+    bottom: 8px;
+    right: 8px;
+    background: white;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
   }
 }
 
 // Informations profil
 .profile-name {
-  font-size: 26px;
+  font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 8px;
-  color: $text-primary;
+  color: #2d3748;
   letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .profile-email {
-  color: $text-secondary;
+  color: #718096;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   
   i {
-    color: $primary-color;
+    color: #667eea;
+    font-size: 1.2rem;
   }
 }
 
-// Bouton notification
+// Bouton notification avec effet glowing
 .notification-btn {
-  background: linear-gradient(135deg, $secondary-color 0%, $secondary-light 100%);
-  color: $white;
+  background: $secondary-gradient;
+  color: white;
   border: none;
-  padding: 16px 32px;
+  padding: 18px 35px;
   border-radius: 50px;
-  font-size: 16px;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba($secondary-color, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 25px rgba(245, 87, 108, 0.4),
+    0 0 0 0 rgba(245, 87, 108, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
   margin: 0 auto;
   width: 100%;
-  max-width: 280px;
+  max-width: 300px;
   position: relative;
   overflow: hidden;
 
@@ -185,13 +154,15 @@ $error-color: #FC8181;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
   }
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba($secondary-color, 0.4);
+    box-shadow: 
+      0 12px 30px rgba(245, 87, 108, 0.5),
+      0 0 0 10px rgba(245, 87, 108, 0);
 
     &::before {
       left: 100%;
@@ -199,62 +170,67 @@ $error-color: #FC8181;
   }
 
   &.active {
-    background: linear-gradient(135deg, $success-color 0%, $success-light 100%);
-    box-shadow: 0 6px 20px rgba($success-color, 0.3);
+    background: $success-gradient;
+    box-shadow: 
+      0 8px 25px rgba(79, 172, 254, 0.4),
+      0 0 0 0 rgba(79, 172, 254, 0.7);
 
     &:hover {
-      box-shadow: 0 8px 25px rgba($success-color, 0.4);
+      box-shadow: 
+        0 12px 30px rgba(79, 172, 254, 0.5),
+        0 0 0 10px rgba(79, 172, 254, 0);
     }
   }
 
   i {
-    font-size: 18px;
+    font-size: 1.3rem;
   }
 }
 
-// Divider
+// Divider stylisé
 .divider {
   height: 2px;
-  background: linear-gradient(90deg, transparent, $border-color, transparent);
-  margin: 35px 0;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  margin: 40px 0;
   position: relative;
 
   &::before {
-    content: '⚡';
+    content: '✨';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: $white;
-    padding: 0 15px;
-    font-size: 18px;
-    color: $primary-color;
+    background: white;
+    padding: 0 20px;
+    font-size: 1.2rem;
+    color: #667eea;
   }
 }
 
-// Actions du profil
+// Actions du profil avec effet carte
 .profile-actions {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 .action-btn {
-  background: $white;
-  border: 2px solid #F1F5F9;
-  padding: 20px;
-  border-radius: 16px;
-  font-size: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid transparent;
+  padding: 24px;
+  border-radius: 18px;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   text-align: left;
-  color: $text-primary;
+  color: #2d3748;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 
   &::before {
     content: '';
@@ -263,63 +239,67 @@ $error-color: #FC8181;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba($primary-color, 0.03), transparent);
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
     transition: left 0.6s;
   }
 
   &:hover {
-    background: #F9FBFC;
-    border-color: $primary-color;
-    transform: translateY(-3px) translateX(5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #667eea;
+    transform: translateY(-5px) translateX(8px);
+    box-shadow: $shadow-medium;
 
     &::before {
       left: 100%;
     }
 
     .action-icon {
-      transform: scale(1.1) rotate(10deg);
+      transform: scale(1.15) rotate(12deg);
     }
   }
 
-  // Bordures colorées différentes pour chaque bouton
+  // Bordures colorées avec dégradé
   &:nth-child(1) {
-    border-left: 4px solid $primary-color;
+    border-left: 4px solid;
+    border-image: $primary-gradient 1;
   }
 
   &:nth-child(2) {
-    border-left: 4px solid $secondary-color;
+    border-left: 4px solid;
+    border-image: $secondary-gradient 1;
   }
 
   &:nth-child(3) {
-    border-left: 4px solid $success-color;
+    border-left: 4px solid;
+    border-image: $success-gradient 1;
   }
 
   .action-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
+    box-shadow: $shadow-soft;
 
-    // Couleurs différentes pour chaque icône
-    &:nth-child(1) {
-      background: rgba($primary-color, 0.1);
-      color: $primary-color;
+    // Couleurs avec dégradé pour chaque icône
+    &:first-child {
+      background: $primary-gradient;
+      color: white;
     }
 
     &:nth-child(2) {
-      background: rgba($secondary-color, 0.1);
-      color: $secondary-color;
+      background: $secondary-gradient;
+      color: white;
     }
 
     &:nth-child(3) {
-      background: rgba($success-color, 0.1);
-      color: $success-color;
+      background: $success-gradient;
+      color: white;
     }
   }
 
@@ -329,48 +309,51 @@ $error-color: #FC8181;
     .action-title {
       font-weight: 600;
       margin-bottom: 6px;
-      color: $text-primary;
-      font-size: 17px;
+      color: #2d3748;
+      font-size: 1.2rem;
     }
 
     .action-desc {
-      color: $text-secondary;
-      font-size: 14px;
+      color: #718096;
+      font-size: 0.95rem;
       line-height: 1.5;
     }
   }
 }
 
-// Styles pour les modals centrés
+// Modals avec effet glassmorphism
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(15px);
   padding: 20px;
 }
 
 .modal {
-  background: $white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  background: $glass-effect;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid $glass-border;
+  border-radius: 24px;
+  box-shadow: $shadow-strong;
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
-  animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  @keyframes modalAppear {
+  @keyframes modalSlideIn {
     from {
       opacity: 0;
-      transform: scale(0.9) translateY(20px);
+      transform: scale(0.8) translateY(30px);
     }
     to {
       opacity: 1;
@@ -382,14 +365,14 @@ $error-color: #FC8181;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 30px 0;
+    padding: 35px 35px 0;
     border-bottom: none;
     position: relative;
 
     h2 {
       margin: 0;
-      color: $text-primary;
-      font-size: 24px;
+      color: #2d3748;
+      font-size: 1.8rem;
       font-weight: 700;
       display: flex;
       justify-content: center;
@@ -398,24 +381,25 @@ $error-color: #FC8181;
     }
 
     .close-btn {
-      background: rgba($text-secondary, 0.1);
-      border: none;
-      font-size: 24px;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.5rem;
       cursor: pointer;
-      color: $text-secondary;
-      padding: 8px;
-      width: 40px;
-      height: 40px;
+      color: #718096;
+      padding: 10px;
+      width: 44px;
+      height: 44px;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 50%;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
 
       &:hover {
-        background: rgba($text-secondary, 0.2);
-        color: $text-primary;
-        transform: rotate(90deg);
+        background: rgba(255, 255, 255, 0.5);
+        color: #2d3748;
+        transform: rotate(90deg) scale(1.1);
       }
     }
   }
@@ -428,31 +412,31 @@ $error-color: #FC8181;
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
   margin: 0 auto;
   padding: 20px 0;
 }
 
 .modal-body {
-  padding: 30px;
+  padding: 35px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  min-height: 250px;
 }
 
 .modal-body p {
-  margin-bottom: 25px;
-  color: $text-secondary;
+  margin-bottom: 30px;
+  color: #718096;
   text-align: center;
-  font-size: 16px;
+  font-size: 1.1rem;
   line-height: 1.6;
   max-width: 400px;
 }
 
 .modal-body .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   text-align: center;
   width: 100%;
   max-width: 320px;
@@ -460,41 +444,47 @@ $error-color: #FC8181;
 
 .modal-body .form-group label {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   font-weight: 600;
-  color: $text-primary;
-  font-size: 16px;
+  color: #2d3748;
+  font-size: 1.1rem;
   text-align: center;
 }
 
 .modal-body .form-input {
   width: 100%;
-  padding: 16px 20px;
-  border: 2px solid $border-color;
-  border-radius: 12px;
-  font-size: 16px;
+  padding: 18px 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 14px;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
   text-align: center;
   display: block;
   margin: 0 auto;
-}
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: $shadow-soft;
 
-.modal-body .form-input:focus {
-  outline: none;
-  border-color: $primary-color;
-  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
-  transform: translateY(-2px);
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 
+      0 0 0 4px rgba(102, 126, 234, 0.15),
+      $shadow-soft;
+    transform: translateY(-2px);
+    background: white;
+  }
 }
 
 .modal-body .form-input.error {
-  border-color: $error-color;
-  box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+  border-color: #fc8181;
+  box-shadow: 0 0 0 4px rgba(252, 129, 129, 0.15);
 }
 
 .error-text {
-  color: $error-color;
-  font-size: 14px;
-  margin-top: 8px;
+  color: #fc8181;
+  font-size: 0.95rem;
+  margin-top: 10px;
   display: block;
   text-align: center;
 }
@@ -502,7 +492,7 @@ $error-color: #FC8181;
 .preferences-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   max-width: 320px;
   margin: 0 auto;
@@ -511,78 +501,84 @@ $error-color: #FC8181;
 .preference-item {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   cursor: pointer;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border: 2px solid $border-color;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
-  background: $white;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   width: 100%;
-}
 
-.preference-item:hover {
-  background: #F9FBFC;
-  border-color: $primary-color;
-  transform: translateX(5px);
+  &:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #667eea;
+    transform: translateX(8px);
+    box-shadow: $shadow-soft;
+  }
 }
 
 .preference-item input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  accent-color: $primary-color;
+  accent-color: #667eea;
 }
 
 .preference-item span:not(.checkmark) {
   font-weight: 500;
-  color: $text-primary;
+  color: #2d3748;
   flex: 1;
+  font-size: 1.05rem;
 }
 
 // Footer des modals
 .modal-footer {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   justify-content: center;
-  padding: 0 30px 30px;
+  padding: 0 35px 35px;
   width: 100%;
 }
 
 .modal-footer button {
-  padding: 14px 28px;
+  padding: 16px 32px;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 14px;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 120px;
+  min-width: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  backdrop-filter: blur(10px);
 }
 
 .modal-footer .btn-primary {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
-  color: $white;
-  box-shadow: 0 4px 15px rgba($primary-color, 0.3);
-}
+  background: $primary-gradient;
+  color: white;
+  box-shadow: $shadow-soft;
 
-.modal-footer .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba($primary-color, 0.4);
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: $shadow-medium;
+  }
 }
 
 .modal-footer .btn-secondary {
-  background: $border-color;
-  color: $text-secondary;
-}
+  background: rgba(255, 255, 255, 0.8);
+  color: #718096;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 
-.modal-footer .btn-secondary:hover {
-  background: #D1D9E6;
-  transform: translateY(-2px);
+  &:hover {
+    background: white;
+    transform: translateY(-3px);
+    box-shadow: $shadow-soft;
+  }
 }
 
 // Responsive Design
@@ -596,34 +592,22 @@ $error-color: #FC8181;
     max-width: 100%;
   }
 
-  .header {
-    padding: 30px 25px !important;
-
-    h1 {
-      font-size: 24px !important;
-    }
-
-    &::after {
-      display: none;
-    }
-  }
-
   .profile-section {
-    padding: 30px 25px !important;
+    padding: 40px 25px 30px !important;
   }
 
   .avatar {
     width: 100px;
     height: 100px;
-    font-size: 36px;
+    font-size: 2rem;
   }
 
   .profile-card {
-    padding: 25px !important;
+    padding: 30px 25px !important;
   }
 
   .action-btn {
-    padding: 18px;
+    padding: 22px;
   }
 
   .modal {
@@ -632,7 +616,7 @@ $error-color: #FC8181;
     .modal-header,
     .modal-body,
     .modal-footer {
-      padding: 25px !important;
+      padding: 30px 25px !important;
     }
   }
 
@@ -665,17 +649,27 @@ $error-color: #FC8181;
 
   .notification-btn {
     max-width: 100% !important;
-    padding: 14px 20px;
+    padding: 16px 24px;
   }
 
   .action-btn .action-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
   }
 
   .modal-footer button {
     width: 100%;
     min-width: auto;
+  }
+
+  .action-btn {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    
+    .action-text {
+      text-align: center;
+    }
   }
 }

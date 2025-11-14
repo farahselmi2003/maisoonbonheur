@@ -663,6 +663,14 @@
       "lastName": "selmi",
       "address": "tuins_manouba_tebourba_borjtoumi_halfawii",
       "id": 3
+    },
+    {
+      "email": "salwaayari01@gmail.com",
+      "password": "789456",
+      "firstName": "salwa ",
+      "lastName": "ayari",
+      "address": "tunis",
+      "id": 4
     }
   ],
   "carts": [

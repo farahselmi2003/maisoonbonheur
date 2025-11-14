@@ -66,13 +66,18 @@
     </div>
   </section>
 
-  <!-- Featured Products Section -->
-  <section class="featured-section">
+  <!-- Section Parfums Vedettes -->
+  <section class="featured-section" *ngIf="featuredPerfumes.length > 0">
     <div class="container">
-      <h2 class="section-title">Parfums en Vedette</h2>
-      <p class="section-subtitle">Nos fragrances les plus populaires</p>
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-crown"></i>
+          Parfums Vedettes
+        </h2>
+        <p class="section-subtitle">Nos sélections exclusives</p>
+      </div>
       
-      <div class="featured-grid">
+      <div class="products-grid">
         <div 
           *ngFor="let perfume of featuredPerfumes" 
           class="product-card"
@@ -80,7 +85,14 @@
         >
           <div class="product-image">
             <img [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" [alt]="perfume.name" />
-            <div class="badge" *ngIf="perfume.is_featured">Populaire</div>
+            <button class="wishlist-btn" 
+                    (click)="toggleWishlist(perfume, $event)"
+                    [class.active]="wishlistStatus[perfume.id]">
+              <i class="fas fa-heart"></i>
+            </button>
+            <div class="product-badges">
+              <span class="badge featured">Vedette</span>
+            </div>
           </div>
           <div class="product-info">
             <p class="product-brand">{{ perfume.brand }}</p>
@@ -97,13 +109,78 @@
                   ★
                 </span>
               </div>
-              <span class="rating-value">{{ perfume.rating.toFixed(1) }}</span>
+              <span class="rating-value">{{ perfume.rating?.toFixed(1) || '0.0' }}</span>
             </div>
             
-            <div class="product-tags">
-              <span class="tag" *ngIf="perfume.intensity">{{ perfume.intensity }}</span>
-              <span class="tag" *ngIf="perfume.season && perfume.season !== 'All'">{{ perfume.season }}</span>
-              <span class="tag" *ngIf="perfume.mood">{{ perfume.mood }}</span>
+            <div class="product-description">
+              <p>{{ perfume.description || 'Parfum exceptionnel pour une expérience unique' }}</p>
+            </div>
+            
+            <div class="product-footer">
+              <div class="product-price">{{ perfume.price }} TND</div>
+              <button 
+                class="btn-add-cart" 
+                (click)="addToCart(perfume, $event)"
+              >
+                <i class="fas fa-shopping-cart"></i>
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Parfums Populaires -->
+  <section class="popular-section" *ngIf="popularPerfumes.length > 0">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-fire"></i>
+          Parfums Populaires
+        </h2>
+        <p class="section-subtitle">Les préférés de nos clients</p>
+      </div>
+      
+      <div class="products-grid">
+        <div 
+          *ngFor="let perfume of popularPerfumes" 
+          class="product-card"
+          (click)="goToProduct(perfume.id)"
+        >
+          <div class="product-image">
+            <img [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" [alt]="perfume.name" />
+            <button class="wishlist-btn" 
+                    (click)="toggleWishlist(perfume, $event)"
+                    [class.active]="wishlistStatus[perfume.id]">
+              <i class="fas fa-heart"></i>
+            </button>
+            <div class="product-badges">
+              <span class="badge popular">Populaire</span>
+              <span class="badge top-rated" *ngIf="perfume.rating >= 4.5">Top</span>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-brand">{{ perfume.brand }}</p>
+            <h3 class="product-name">{{ perfume.name }}</h3>
+            
+            <div class="product-rating">
+              <div class="stars">
+                <span 
+                  *ngFor="let star of getStarsArray(perfume.rating); let i = index" 
+                  class="star" 
+                  [class.filled]="star === 1"
+                  [class.half]="star === 0.5"
+                >
+                  ★
+                </span>
+              </div>
+              <span class="rating-value">{{ perfume.rating?.toFixed(1) || '0.0' }}</span>
+            </div>
+            
+            <div class="product-description">
+              <p>{{ perfume.description || 'Parfum exceptionnel pour une expérience unique' }}</p>
             </div>
             
             <div class="product-footer">
@@ -131,7 +208,21 @@
         <a [routerLink]="['/creator']" class="btn-primary">Commencer la création</a>
       </div>
       <div class="promo-image">
-        <img src="../../../assets/images/20.webp" alt="Créateur de parfum" />
+        <img src="assets/images/20.webp" alt="Créateur de parfum" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Bouton Voir Tout -->
+  <section class="view-all-section">
+    <div class="container">
+      <div class="view-all-content">
+        <h3>Découvrez notre collection complète</h3>
+        <p>Plus de 100 parfums uniques vous attendent</p>
+        <a routerLink="/catalog" class="view-all-btn">
+          Voir tous les parfums
+          <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
     </div>
   </section>

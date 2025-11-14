@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService, User } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,12 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProfileComponent {
   // Données du profil utilisateur
-  userProfile = {
-    name: 'Farah Selmi',
-    email: 'farah@example.com',
-    avatarInitials: 'FS',
-    notificationsEnabled: true
-  };
+  userProfile: User | null = null;
 
   // États des modals
   showEditModal = false;
@@ -28,6 +24,7 @@ export class ProfileComponent {
   tempName = '';
   tempEmail = '';
   tempInitials = '';
+  tempAddress = '';
 
   // Préférences olfactives
   olfactoryPreferences = [
@@ -46,10 +43,14 @@ export class ProfileComponent {
     { name: 'Actualités', enabled: true }
   ];
 
-  constructor() {
-    this.tempName = this.userProfile.name;
-    this.tempEmail = this.userProfile.email;
-    this.tempInitials = this.userProfile.avatarInitials;
+  constructor(private authService: AuthService) {
+    this.userProfile = this.authService.currentUser;
+    if (this.userProfile) {
+      this.tempName = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+      this.tempEmail = this.userProfile.email;
+      this.tempInitials = (this.userProfile.firstName[0] || '') + (this.userProfile.lastName[0] || '');
+      this.tempAddress = this.userProfile.address;
+    }
   }
 
   // Ouvrir les modals
@@ -79,9 +80,24 @@ export class ProfileComponent {
 
   // Sauvegarder les modifications
   saveProfile() {
-    this.userProfile.name = this.tempName;
-    this.userProfile.email = this.tempEmail;
-    this.closeAllModals();
+    if (this.userProfile) {
+      const [firstName, ...lastNameArr] = this.tempName.split(' ');
+      const lastName = lastNameArr.join(' ');
+      const updatedUser: User = {
+        ...this.userProfile,
+        firstName: firstName,
+        lastName: lastName,
+        email: this.tempEmail,
+        address: this.tempAddress,
+      };
+      const result = this.authService.updateUser(updatedUser);
+      if (result.success) {
+        this.userProfile = this.authService.currentUser;
+        this.closeAllModals();
+      } else {
+        alert(result.message);
+      }
+    }
   }
 
   savePreferences() {
@@ -95,14 +111,14 @@ export class ProfileComponent {
   }
 
   saveAvatar() {
-    if (this.tempInitials.length === 2) {
-      this.userProfile.avatarInitials = this.tempInitials.toUpperCase();
+    if (this.tempInitials.length === 2 && this.userProfile) {
+      // Ici, tu pourrais ajouter la logique pour sauvegarder les initiales dans le profil si tu ajoutes ce champ au modèle User
       this.closeAllModals();
     }
   }
 
   // Basculer les notifications
   toggleNotifications() {
-    this.userProfile.notificationsEnabled = !this.userProfile.notificationsEnabled;
+    // Ici, tu pourrais ajouter la logique pour gérer les notifications dans le modèle User si tu ajoutes ce champ
   }
 }

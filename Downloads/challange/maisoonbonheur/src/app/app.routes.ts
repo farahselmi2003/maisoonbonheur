@@ -33,29 +33,31 @@ export const routes: Routes = [
   },
   {
     path: 'wishlist',
-    loadComponent: () => import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent)
+    loadComponent: () => import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'panier',
     loadComponent: () => import('./components/cart/cart.component').then(m => m.CartComponent)
-    // canActivate: [authGuard] - décommenter si nécessaire plus tard
   },
-    {
+  {
     path: 'checkout',
-    loadComponent: () => import('./components/checkout/checkout.component').then(m => m.CheckoutComponent)
+    loadComponent: () => import('./components/checkout/checkout.component').then(m => m.CheckoutComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'order-confirmation/:id',
-    loadComponent: () => import('./components/ConfirmationCommande/order-confirmation.component').then(m => m.OrderConfirmationComponent)
+    loadComponent: () => import('./components/ConfirmationCommande/order-confirmation.component').then(m => m.OrderConfirmationComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'orders',
-    loadComponent: () => import('./components/orders/orders.component').then(m => m.OrdersComponent)
-
+    loadComponent: () => import('./components/orders/orders.component').then(m => m.OrdersComponent),
+    canActivate: [authGuard]
   },
   { 
-    path: 'user/addresses', 
-    loadComponent: () => import('./components/addresses/addresses.component').then(m => m.AddressesComponent)
+    path: 'addresses', 
+    loadComponent: () => import('./components/addresses/addresses.component').then(m => m.AddressesComponent),
+    canActivate: [authGuard]
   },
 ];
-

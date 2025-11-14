@@ -1,0 +1,63 @@
+<div class="addresses-container">
+  <div class="addresses-header">
+    <h2 class="page-title">Mes Adresses</h2>
+    <button class="btn-primary" (click)="addNewAddress()">
+      <i class="fas fa-plus"></i>
+      Ajouter une adresse
+    </button>
+  </div>
+
+  <div class="addresses-list">
+    <!-- Adresse par défaut -->
+    <div *ngFor="let address of addresses" 
+         class="address-card" 
+         [class.default]="address.is_default">
+      
+      <div class="address-header">
+        <div class="address-title">
+          <h3>{{ address.name || 'Adresse' }}</h3>
+          <span *ngIf="address.is_default" class="default-badge">Par défaut</span>
+        </div>
+        <div class="address-actions">
+          <button class="btn-edit" (click)="editAddress(address)">
+            <i class="fas fa-edit"></i>
+            Modifier
+          </button>
+          <button class="btn-delete" (click)="deleteAddress(address.id)">
+            <i class="fas fa-trash"></i>
+            Supprimer
+          </button>
+        </div>
+      </div>
+
+      <div class="address-content">
+        <div class="address-info">
+          <p class="street">{{ address.street }}</p>
+          <p class="city">{{ address.postal_code }} {{ address.city }}</p>
+        </div>
+        
+        <div class="address-footer">
+          <button *ngIf="!address.is_default" 
+                  class="btn-set-default" 
+                  (click)="setDefaultAddress(address.id)">
+            <i class="fas fa-star"></i>
+            Définir par défaut
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide -->
+    <div *ngIf="addresses.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+      <h3>Aucune adresse enregistrée</h3>
+      <p>Vous n'avez pas encore ajouté d'adresse de livraison.</p>
+      <button class="btn-primary" (click)="addNewAddress()">
+        <i class="fas fa-plus"></i>
+        Ajouter ma première adresse
+      </button>
+    </div>
+  </div>
+</div>

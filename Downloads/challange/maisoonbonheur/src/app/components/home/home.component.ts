@@ -20,16 +20,12 @@ import { JsonServerService } from '../../services/json-server';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   categories: any[] = [];
-  featuredPerfumes: any[] = [];
+  featuredPerfumes: any[] = []; // AJOUTÉ: Parfums vedettes
+  popularPerfumes: any[] = []; // AJOUTÉ: Parfums populaires
+  wishlistStatus: { [key: number]: boolean } = {};
   currentSlide = 0;
   loading = true;
   private carouselInterval: any;
-
-  // Propriétés pour la recherche
-  searchTerm: string = '';
-  searchResults: any[] = [];
-  allPerfumes: any[] = [];
-  isSearching: boolean = false;
 
   slides = [
     {
@@ -77,10 +73,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Charger les parfums en vedette
-    this.jsonServerService.getFeaturedPerfumes().subscribe({
+    // Charger les parfums
+    this.jsonServerService.getPerfumes().subscribe({
       next: (perfumes) => {
-        this.featuredPerfumes = perfumes;
+        // Filtrer les parfums vedettes (featured)
+        this.featuredPerfumes = perfumes.filter(p => p.is_featured).slice(0, 6);
+        
+        // Filtrer les parfums populaires (rating élevé)
+        this.popularPerfumes = perfumes
+          .filter(p => p.rating >= 4.0)
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 6);
+        
         this.loading = false;
       },
       error: (error) => {
@@ -88,48 +92,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
-
-    // Charger tous les parfums pour la recherche
-    this.jsonServerService.getPerfumes().subscribe({
-      next: (perfumes) => {
-        this.allPerfumes = perfumes;
-      },
-      error: (error) => {
-        console.error('Error loading all perfumes:', error);
-      }
-    });
   }
 
-  // Méthodes de recherche
-  onSearch() {
-    if (!this.searchTerm || this.searchTerm.length < 2) {
-      this.searchResults = [];
-      this.isSearching = false;
-      return;
-    }
-
-    this.isSearching = true;
-    const searchTermLower = this.searchTerm.toLowerCase().trim();
-
-    this.searchResults = this.allPerfumes.filter(perfume => {
-      const nameMatch = perfume.name?.toLowerCase().includes(searchTermLower);
-      const brandMatch = perfume.brand?.toLowerCase().includes(searchTermLower);
-      
-      const categoryMatch = this.categories.some(category => 
-        category.name?.toLowerCase().includes(searchTermLower) && 
-        category.id === perfume.category_id
-      );
-
-      return nameMatch || brandMatch || categoryMatch;
-    });
-
-    this.searchResults = this.searchResults.slice(0, 12);
-  }
-
-  clearSearch() {
-    this.searchTerm = '';
-    this.searchResults = [];
-    this.isSearching = false;
+  // Méthode pour les favoris
+  toggleWishlist(perfume: any, event: Event) {
+    event.stopPropagation();
+    this.wishlistStatus[perfume.id] = !this.wishlistStatus[perfume.id];
+    console.log('Wishlist updated for perfume:', perfume.name, 'Status:', this.wishlistStatus[perfume.id]);
   }
 
   getStarsArray(rating: number): number[] {
@@ -224,14 +193,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         document.body.removeChild(feedback);
       }, 300);
     }, 2000);
-  }
-
-  getPerfumeRows(): any[][] {
-    const rows = [];
-    for (let i = 0; i < this.featuredPerfumes.length; i += 3) {
-      rows.push(this.featuredPerfumes.slice(i, i + 3));
-    }
-    return rows;
   }
 
   goToProduct(productId: number): void {

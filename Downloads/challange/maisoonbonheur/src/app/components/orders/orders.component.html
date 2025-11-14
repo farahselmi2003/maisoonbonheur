@@ -9,24 +9,38 @@
         <i class="fas fa-cube"></i>
         {{ orders.length }} commande(s)
       </span>
+      <span class="stat-item">
+        <i class="fas fa-box-open"></i>
+        {{ getTotalItemsCount() }} article(s) au total
+      </span>
     </div>
   </div>
 
-  <div *ngIf="orders.length === 0" class="empty-orders">
+  <!-- Loading State -->
+  <div *ngIf="loading && orders.length === 0" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Chargement de vos commandes...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && orders.length === 0" class="empty-orders">
     <div class="empty-icon">
       <i class="fas fa-shopping-bag"></i>
     </div>
     <h3>Aucune commande trouvée</h3>
-    <p>Vous n'avez pas encore passé de commande</p>
+    <p>Vous n'avez pas encore passé de commande. Découvrez notre collection de parfums exclusifs.</p>
     <button class="browse-btn" routerLink="/catalog">
       <i class="fas fa-search"></i>
       Découvrir les parfums
     </button>
   </div>
 
-  <div *ngIf="orders.length > 0" class="orders-content">
+  <!-- Orders List -->
+  <div *ngIf="!loading && orders.length > 0" class="orders-content">
     <div class="orders-list">
-      <div *ngFor="let order of orders" class="order-card">
+      <div *ngFor="let order of orders; trackBy: trackByOrderId" class="order-card">
+        
+        <!-- Order Header -->
         <div class="order-header">
           <div class="order-info">
             <h3 class="order-number">Commande #{{ order.id }}</h3>
@@ -42,10 +56,13 @@
           </div>
         </div>
 
+        <!-- Order Body -->
         <div class="order-body">
           <div class="order-items-preview">
             <div *ngFor="let item of order.items.slice(0, 2)" class="preview-item">
-              <img [src]="item.image_url || 'assets/images/default-perfume.jpg'" [alt]="item.name">
+              <img [src]="item.image_url || 'assets/images/default-perfume.jpg'" 
+                   [alt]="item.name"
+                   (error)="handleImageError($event)">
               <span class="item-name">{{ item.name }}</span>
               <span class="item-quantity">x{{ item.quantity }}</span>
             </div>
@@ -61,31 +78,51 @@
             </div>
             <div class="summary-item">
               <span>Livraison</span>
-              <span>{{ order.shippingMethod === 'express' ? 'Express' : 'Standard' }}</span>
+              <span class="delivery-method">
+                <i class="fas" 
+                   [class.fa-rocket]="order.shippingMethod === 'express'"
+                   [class.fa-truck]="order.shippingMethod !== 'express'"></i>
+                {{ order.shippingMethod === 'express' ? 'Express' : 'Standard' }}
+              </span>
             </div>
             <div class="summary-item total">
-              <span>Total</span>
-              <span class="order-total">{{ order.total }} TND</span>
+              <span>Total TTC</span>
+              <span class="order-total">{{ order.total | number:'1.2-2' }} TND</span>
             </div>
           </div>
         </div>
 
+        <!-- Order Footer -->
         <div class="order-footer">
-          <div class="shipping-address">
-            <h4>Adresse de livraison</h4>
-            <p>{{ order.shippingAddress.fullName }}</p>
-            <p>{{ order.shippingAddress.address }}</p>
-            <p>{{ order.shippingAddress.postalCode }} {{ order.shippingAddress.city }}</p>
-            <p>{{ order.shippingAddress.country }}</p>
+          <div class="shipping-info">
+            <div class="shipping-address">
+              <h4>
+                <i class="fas fa-map-marker-alt"></i>
+                Adresse de livraison
+              </h4>
+              <p>{{ formatAddress(order.shippingAddress) }}</p>
+            </div>
+            <div class="payment-method" *ngIf="order.paymentMethod">
+              <h4>
+                <i class="fas fa-credit-card"></i>
+                Paiement
+              </h4>
+              <p>{{ getPaymentMethodText(order.paymentMethod) }}</p>
+            </div>
           </div>
+          
           <div class="order-actions">
-            <button class="details-btn" [routerLink]="['/order-details', order.id]">
+            <button class="details-btn" 
+                    (click)="viewOrderDetails(order.id)"
+                    [disabled]="isReordering(order.id)">
               <i class="fas fa-eye"></i>
-              Détails
+              {{ isReordering(order.id) ? 'Chargement...' : 'Détails' }}
             </button>
-            <button class="reorder-btn">
-              <i class="fas fa-redo"></i>
-              Commander à nouveau
+            <button class="reorder-btn" 
+                    (click)="reorder(order)"
+                    [disabled]="isReordering(order.id)">
+              <i class="fas" [class.fa-redo]="!isReordering(order.id)" [class.fa-spinner]="isReordering(order.id)" [class.fa-spin]="isReordering(order.id)"></i>
+              {{ isReordering(order.id) ? 'Ajout au panier...' : 'Commander à nouveau' }}
             </button>
           </div>
         </div>

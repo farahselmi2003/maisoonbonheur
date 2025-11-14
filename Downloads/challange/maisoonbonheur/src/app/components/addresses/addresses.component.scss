@@ -1,0 +1,248 @@
+.addresses-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.addresses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+  }
+}
+
+.addresses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.address-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &.default {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+    
+    .default-badge {
+      background: #667eea;
+      color: white;
+    }
+  }
+}
+
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.address-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+  }
+}
+
+.default-badge {
+  background: #e2e8f0;
+  color: #4a5568;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.address-actions {
+  display: flex;
+  gap: 0.75rem;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.btn-edit, .btn-delete {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-edit {
+  background: white;
+  color: #667eea;
+  
+  &:hover {
+    background: #f7fafc;
+    border-color: #667eea;
+  }
+}
+
+.btn-delete {
+  background: white;
+  color: #e53e3e;
+  
+  &:hover {
+    background: #fff5f5;
+    border-color: #e53e3e;
+  }
+}
+
+.address-content {
+  .address-info {
+    margin-bottom: 1rem;
+    
+    .street {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #2d3748;
+      margin: 0 0 0.25rem 0;
+    }
+    
+    .city {
+      color: #718096;
+      margin: 0;
+    }
+  }
+}
+
+.address-footer {
+  .btn-set-default {
+    background: transparent;
+    color: #667eea;
+    border: 1px solid #667eea;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #667eea;
+      color: white;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  
+  .empty-icon {
+    font-size: 3rem;
+    color: #cbd5e0;
+    margin-bottom: 1rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #718096;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .addresses-container {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .address-card {
+    padding: 1rem;
+  }
+  
+  .address-actions {
+    button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}
+
+// Icônes Font Awesome
+.fa-plus,
+.fa-edit,
+.fa-trash,
+.fa-star,
+.fa-map-marker-alt {
+  margin-right: 0.5rem;
+}

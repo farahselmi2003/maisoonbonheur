@@ -12,7 +12,7 @@
     <div class="header-content">
       <h1 class="page-title">{{ selectedCategoryId ? getCategoryName(selectedCategoryId) : 'Notre Collection' }}</h1>
       <p class="product-count">
-        {{ getTotalDisplayedProducts() }} parfum{{ getTotalDisplayedProducts() > 1 ? 's' : '' }} disponible{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
+        {{ getTotalDisplayedProducts() }} parfum{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
       </p>
     </div>
   </header>
@@ -29,103 +29,102 @@
         </button>
       </div>
 
-      <div class="filter-section">
-        <h4 class="filter-title">Catégorie</h4>
-        <div class="filter-options">
-          <label class="filter-option" [class.active]="!selectedCategoryId">
-            <input type="radio" name="category" [value]="null" [ngModel]="selectedCategoryId" 
-                   (ngModelChange)="onCategoryChange($event)" hidden>
-            <span class="checkmark"></span>
+      <!-- Catégories -->
+      <div class="filter-group">
+        <h4>Catégories</h4>
+        <div class="category-list">
+          <button class="category-btn" 
+                  [class.active]="!selectedCategoryId"
+                  (click)="onCategoryChange(null)">
             Toutes les catégories
-          </label>
-          <label class="filter-option" *ngFor="let c of categories" [class.active]="selectedCategoryId === c.id">
-            <input type="radio" name="category" [value]="c.id" [ngModel]="selectedCategoryId" 
-                   (ngModelChange)="onCategoryChange($event)" hidden>
-            <span class="checkmark"></span>
-            {{ c.name }}
-          </label>
+          </button>
+          <button class="category-btn" 
+                  *ngFor="let category of categories"
+                  [class.active]="selectedCategoryId === category.id"
+                  (click)="onCategoryChange(category.id.toString())">
+            {{ category.name }}
+          </button>
         </div>
       </div>
 
-      <div class="filter-section">
-        <h4 class="filter-title">Prix (TND)</h4>
-        <div class="price-range">
-          <div class="range-values">
-            <span>{{ minPrice }} TND</span>
-            <span>-</span>
-            <span>{{ maxPrice }} TND</span>
-          </div>
-          <div class="range-slider">
-            <div class="track">
-              <div class="track-fill" [ngStyle]="{ left: leftPercent, right: rightPercent }"></div>
-            </div>
-            <input type="range" class="range range-min" [min]="priceMinLimit" [max]="priceMaxLimit" 
-                   [(ngModel)]="minPrice" (input)="onPriceInput()" (change)="onFilterChange()">
-            <input type="range" class="range range-max" [min]="priceMinLimit" [max]="priceMaxLimit" 
-                   [(ngModel)]="maxPrice" (input)="onPriceInput()" (change)="onFilterChange()">
-          </div>
+      <!-- Prix -->
+      <div class="filter-group">
+        <h4>Prix (TND)</h4>
+        <div class="price-inputs">
+          <input type="number" [(ngModel)]="minPrice" (change)="onPriceChange()" min="80" max="500">
+          <input type="number" [(ngModel)]="maxPrice" (change)="onPriceChange()" min="80" max="500">
+        </div>
+        <div class="range-slider-simple">
+          <div class="slider-track"></div>
+          <div class="slider-fill" [ngStyle]="{ left: leftPercent, right: rightPercent }"></div>
+          <input type="range" [min]="priceMinLimit" [max]="priceMaxLimit" 
+                 [(ngModel)]="minPrice" (input)="onPriceInput()" (change)="onPriceChange()">
+          <input type="range" [min]="priceMinLimit" [max]="priceMaxLimit" 
+                 [(ngModel)]="maxPrice" (input)="onPriceInput()" (change)="onPriceChange()">
         </div>
       </div>
 
-      <div class="filter-section">
-        <h4 class="filter-title">Note minimale</h4>
-        <div class="rating-filter">
-          <div class="rating-options">
-            <label class="rating-option" *ngFor="let r of [null, 1, 2, 3, 4, 5]" 
-                   [class.active]="minRating === r"
-                   (click)="onRatingChange(r)">
-              <input type="radio" name="rating" [value]="r" [ngModel]="minRating" hidden>
-              <span class="rating-stars">
-                <span class="star" *ngFor="let s of [1,2,3,4,5]" 
-                      [class.filled]="r !== null && s <= r">★</span>
-              </span>
-              <span class="rating-label">{{ r !== null ? r + ' étoile' + (r > 1 ? 's' : '') : 'Toutes' }}</span>
-            </label>
-          </div>
+      <!-- Note -->
+      <div class="filter-group">
+        <h4>Note minimale</h4>
+        <div class="rating-options-simple">
+          <button class="rating-btn" 
+                  [class.active]="minRating === null"
+                  (click)="onRatingChange(null)">
+            Toutes les notes
+          </button>
+          <button class="rating-btn" 
+                  *ngFor="let rating of [4, 3, 2, 1]"
+                  [class.active]="minRating === rating"
+                  (click)="onRatingChange(rating)">
+            <span class="stars-small">
+              <span class="star filled" *ngFor="let s of [1,2,3,4,5].slice(0, rating)">★</span>
+              <span class="star" *ngFor="let s of [1,2,3,4,5].slice(rating)">★</span>
+            </span>
+          </button>
         </div>
-      </div>
-
-      <div class="filter-section">
-        <h4 class="filter-title">Trier par</h4>
-        <select class="sort-select" [ngModel]="sortOption" (ngModelChange)="onSortChange($event)">
-          <option [ngValue]="null">Par défaut</option>
-          <option value="price_asc">Prix croissant</option>
-          <option value="price_desc">Prix décroissant</option>
-          <option value="popularity">Popularité</option>
-          <option value="new">Nouveautés</option>
-        </select>
       </div>
     </aside>
 
-    <!-- Products Grid -->
-    <main class="products-main">
-      <!-- Loading State -->
-      <div *ngIf="loading && perfumes.length === 0 && categoryCollections.length === 0" class="loading-container">
+    <!-- Products Section -->
+    <main class="products-section">
+      <!-- Sort Bar -->
+      <div class="sort-bar">
+        <div class="sort-controls">
+          <label>Trier par:</label>
+          <select [ngModel]="sortOption" (ngModelChange)="onSortChange($event)">
+            <option [ngValue]="null">Par défaut</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="price_desc">Prix décroissant</option>
+            <option value="popularity">Popularité</option>
+            <option value="new">Nouveautés</option>
+          </select>
+        </div>
+        <div class="results-count">
+          {{ getTotalDisplayedProducts() }} résultat{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading && perfumes.length === 0" class="loading-container">
         <div class="loading-spinner"></div>
         <p>Chargement des parfums...</p>
       </div>
 
-      <!-- Vue Catégorie sélectionnée -->
-      <div *ngIf="selectedCategoryId && perfumes.length > 0" class="products-grid">
+      <!-- Products Grid -->
+      <div *ngIf="perfumes.length > 0" class="products-grid">
         <div class="product-card" *ngFor="let perfume of perfumes" (click)="goToProduct(perfume.id)">
           <div class="product-image">
-            <img 
-              [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" 
-              [alt]="perfume.name"
-              (error)="perfume.image_url = 'assets/images/default-perfume.jpg'"
-            />
-            <!-- Cœur SVG des favoris -->
-            <button class="wishlist-heart-btn" 
+            <img [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" [alt]="perfume.name">
+            <button class="wishlist-btn" 
                     (click)="toggleWishlist(perfume, $event)"
                     [class.active]="wishlistStatus[perfume.id]">
-              <svg class="heart-svg" viewBox="0 0 24 24">
-                <path class="heart-path" 
-                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
+              <i class="fas fa-heart"></i>
             </button>
             <div class="product-badges">
               <span *ngIf="perfume.is_featured" class="badge featured">Vedette</span>
               <span *ngIf="perfume.rating >= 4.5" class="badge popular">Populaire</span>
+              <span *ngIf="isNewPerfume(perfume)" class="badge new">Nouveau</span>
             </div>
           </div>
           <div class="product-info">
@@ -154,77 +153,23 @@
         </div>
       </div>
 
-      <!-- Vue Groupée par Catégorie -->
-      <div *ngIf="!selectedCategoryId && categoryCollections.length > 0" class="grouped-view">
-        <div class="category-section" *ngFor="let col of categoryCollections">
-          <div class="category-header">
-            <h2 class="category-title">{{ col.category.name }}</h2>
-            <p class="category-count">{{ col.perfumes.length }} parfum{{ col.perfumes.length > 1 ? 's' : '' }}</p>
-          </div>
-          <div class="products-grid">
-            <div class="product-card" *ngFor="let perfume of col.perfumes" (click)="goToProduct(perfume.id)">
-              <div class="product-image">
-                <img 
-                  [src]="perfume.image_url || 'assets/images/default-perfume.jpg'" 
-                  [alt]="perfume.name"
-                  (error)="perfume.image_url = 'assets/images/default-perfume.jpg'"
-                />
-                <!-- Cœur SVG des favoris -->
-                <button class="wishlist-heart-btn" 
-                        (click)="toggleWishlist(perfume, $event)"
-                        [class.active]="wishlistStatus[perfume.id]">
-                  <svg class="heart-svg" viewBox="0 0 24 24">
-                    <path class="heart-path" 
-                          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                </button>
-                <div class="product-badges">
-                  <span *ngIf="perfume.is_featured" class="badge featured">Vedette</span>
-                  <span *ngIf="perfume.rating >= 4.5" class="badge popular">Populaire</span>
-                </div>
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">{{ perfume.name }}</h3>
-                <p class="product-brand">{{ perfume.brand }}</p>
-                <div class="product-rating">
-                  <span class="stars">
-                    <span class="star" *ngFor="let s of starArray" [class.filled]="s <= (perfume.rating || 0)">★</span>
-                  </span>
-                  <span class="rating-value">{{ (perfume.rating || 0).toFixed(1) }}</span>
-                </div>
-                <div class="product-tags">
-                  <span class="tag">{{ perfume.intensity }}</span>
-                  <span class="tag">{{ perfume.season }}</span>
-                </div>
-                <div class="product-footer">
-                  <div class="price-container">
-                    <span class="product-price">{{ perfume.price }} TND</span>
-                  </div>
-                  <button class="add-to-cart-btn" (click)="addToCart(perfume, $event)">
-                    <i class="fas fa-shopping-cart"></i>
-                    Ajouter
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Load More Button -->
-      <div *ngIf="!loading && !endReached && (selectedCategoryId ? perfumes.length > 0 : categoryCollections.length > 0)" class="load-more-container">
+      <!-- Load More -->
+      <div *ngIf="!loading && !endReached && perfumes.length > 0" class="load-more-container">
         <button class="load-more-btn" (click)="loadMore()">
-          Charger plus de parfums
+          <i class="fas fa-plus"></i>
+          Charger plus
         </button>
       </div>
 
       <!-- No Results -->
-      <div *ngIf="!loading && ((selectedCategoryId && perfumes.length === 0) || (!selectedCategoryId && categoryCollections.length === 0))" class="no-results">
+      <div *ngIf="!loading && perfumes.length === 0" class="no-results">
         <div class="no-results-content">
           <i class="fas fa-search"></i>
           <h3>Aucun parfum trouvé</h3>
-          <p>Aucun parfum ne correspond à vos critères de recherche.</p>
-          <button class="reset-btn primary" (click)="resetFilters()">Réinitialiser les filtres</button>
+          <p>Aucun parfum ne correspond à vos critères.</p>
+          <button class="reset-btn" (click)="resetFilters()">
+            Réinitialiser les filtres
+          </button>
         </div>
       </div>
     </main>
