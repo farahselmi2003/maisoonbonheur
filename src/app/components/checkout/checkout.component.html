@@ -1,0 +1,306 @@
+<div class="checkout-container">
+  <!-- Header avec étapes -->
+  <div class="checkout-header">
+    <h2 class="checkout-title">
+      <i class="fas fa-shopping-cart"></i>
+      Finaliser la Commande
+    </h2>
+    <div class="checkout-steps">
+      <div class="step active">
+        <span class="step-number">1</span>
+        <span class="step-label">Panier</span>
+      </div>
+      <div class="step active">
+        <span class="step-number">2</span>
+        <span class="step-label">Livraison</span>
+      </div>
+      <div class="step active">
+        <span class="step-number">3</span>
+        <span class="step-label">Paiement</span>
+      </div>
+      <div class="step">
+        <span class="step-number">4</span>
+        <span class="step-label">Confirmation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résumé des erreurs -->
+  <div *ngIf="checkoutForm.invalid && (checkoutForm.touched || checkoutForm.dirty)" class="form-error-summary">
+    <div class="error-title">
+      <i class="fas fa-exclamation-triangle"></i>
+      Veuillez corriger les erreurs suivantes :
+    </div>
+    <ul class="error-list">
+      <li *ngIf="isFieldInvalid('shippingAddress', 'fullName')">Nom complet requis (min. 3 caractères)</li>
+      <li *ngIf="isFieldInvalid('shippingAddress', 'address')">Adresse requise (min. 5 caractères)</li>
+      <li *ngIf="isFieldInvalid('shippingAddress', 'city')">Ville requise</li>
+      <li *ngIf="isFieldInvalid('shippingAddress', 'postalCode')">Code postal invalide (4 chiffres)</li>
+      <li *ngIf="isFieldInvalid('shippingAddress', 'phone')">Numéro de téléphone invalide (8 chiffres)</li>
+      <li *ngIf="isFieldInvalid('shippingAddress', 'email')">Email invalide</li>
+      <li *ngIf="checkoutForm.get('agreeToTerms')?.invalid && (checkoutForm.get('agreeToTerms')?.touched || checkoutForm.get('agreeToTerms')?.dirty)">
+        Vous devez accepter les conditions générales
+      </li>
+      <li *ngIf="checkoutForm.get('paymentMethod')?.value === 'card' && cardDetails.invalid">
+        Détails de carte invalides
+      </li>
+    </ul>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="checkout-content">
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
+      <!-- Colonne formulaire -->
+      <div class="form-column">
+        
+        <!-- Adresse de livraison -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-truck"></i>
+            Adresse de Livraison
+          </h3>
+          <div formGroupName="shippingAddress" class="address-form">
+            <div class="form-group">
+              <label for="fullName">Nom complet *</label>
+              <input id="fullName" type="text" formControlName="fullName" 
+                     [class.invalid]="isFieldInvalid('shippingAddress', 'fullName')"
+                     placeholder="Votre nom complet">
+              <div *ngIf="isFieldInvalid('shippingAddress', 'fullName')" class="error-message">
+                <span *ngIf="isFieldError('shippingAddress', 'fullName', 'required')">Le nom complet est requis</span>
+                <span *ngIf="isFieldError('shippingAddress', 'fullName', 'minlength')">Minimum 3 caractères requis</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Adresse *</label>
+              <input id="address" type="text" formControlName="address"
+                     [class.invalid]="isFieldInvalid('shippingAddress', 'address')"
+                     placeholder="Votre adresse complète">
+              <div *ngIf="isFieldInvalid('shippingAddress', 'address')" class="error-message">
+                <span *ngIf="isFieldError('shippingAddress', 'address', 'required')">L'adresse est requise</span>
+                <span *ngIf="isFieldError('shippingAddress', 'address', 'minlength')">Minimum 5 caractères requis</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">Ville *</label>
+                <input id="city" type="text" formControlName="city"
+                       [class.invalid]="isFieldInvalid('shippingAddress', 'city')"
+                       placeholder="Votre ville">
+                <div *ngIf="isFieldInvalid('shippingAddress', 'city')" class="error-message">
+                  La ville est requise
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="postalCode">Code postal *</label>
+                <input id="postalCode" type="text" formControlName="postalCode"
+                       [class.invalid]="isFieldInvalid('shippingAddress', 'postalCode')"
+                       placeholder="0000" maxlength="4">
+                <div *ngIf="isFieldInvalid('shippingAddress', 'postalCode')" class="error-message">
+                  Code postal invalide (4 chiffres)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="country">Pays *</label>
+                <select id="country" formControlName="country">
+                  <option value="Tunisie">Tunisie</option>
+                  <option value="France">France</option>
+                  <option value="Canada">Canada</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="phone">Téléphone *</label>
+                <input id="phone" type="tel" formControlName="phone"
+                       [class.invalid]="isFieldInvalid('shippingAddress', 'phone')"
+                       placeholder="XX XXX XXX" maxlength="8">
+                <div *ngIf="isFieldInvalid('shippingAddress', 'phone')" class="error-message">
+                  Numéro de téléphone invalide (8 chiffres)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input id="email" type="email" formControlName="email"
+                     [class.invalid]="isFieldInvalid('shippingAddress', 'email')"
+                     placeholder="votre@email.com">
+              <div *ngIf="isFieldInvalid('shippingAddress', 'email')" class="error-message">
+                <span *ngIf="isFieldError('shippingAddress', 'email', 'required')">L'email est requis</span>
+                <span *ngIf="isFieldError('shippingAddress', 'email', 'email')">Format d'email invalide</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode de livraison -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-shipping-fast"></i>
+            Mode de Livraison
+          </h3>
+          <div class="shipping-methods">
+            <label *ngFor="let method of shippingMethods" 
+                   class="shipping-method"
+                   [class.selected]="checkoutForm.get('shippingMethod')?.value === method.id">
+              <input type="radio" formControlName="shippingMethod" [value]="method.id">
+              <div class="method-content">
+                <div class="method-info">
+                  <span class="method-name">{{ method.name }}</span>
+                  <span class="method-delivery">{{ method.delivery }}</span>
+                </div>
+                <span class="method-cost">{{ method.cost }} TND</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mode de paiement -->
+        <div class="form-section">
+          <h3 class="section-title">
+            <i class="fas fa-credit-card"></i>
+            Mode de Paiement
+          </h3>
+          <div class="payment-methods">
+            <label *ngFor="let method of paymentMethods" 
+                   class="payment-method"
+                   [class.selected]="checkoutForm.get('paymentMethod')?.value === method.id">
+              <input type="radio" formControlName="paymentMethod" [value]="method.id">
+              <i class="fas" [class]="method.icon"></i>
+              <span class="method-name">{{ method.name }}</span>
+            </label>
+          </div>
+
+          <!-- Détails carte de crédit -->
+          <div *ngIf="checkoutForm.get('paymentMethod')?.value === 'card'" 
+               formGroupName="cardDetails" 
+               class="card-details">
+            <div class="form-group">
+              <label for="cardName">Nom sur la carte *</label>
+              <input id="cardName" type="text" formControlName="cardName"
+                     [class.invalid]="cardDetails.get('cardName')?.invalid && (cardDetails.get('cardName')?.touched || cardDetails.get('cardName')?.dirty)"
+                     placeholder="Votre nom">
+              <div *ngIf="cardDetails.get('cardName')?.invalid && (cardDetails.get('cardName')?.touched || cardDetails.get('cardName')?.dirty)" 
+                   class="error-message">
+                Le nom sur la carte est requis
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cardNumber">Numéro de carte *</label>
+              <input id="cardNumber" type="text" formControlName="cardNumber"
+                     (input)="formatCardNumber($event)"
+                     [class.invalid]="cardDetails.get('cardNumber')?.invalid && (cardDetails.get('cardNumber')?.touched || cardDetails.get('cardNumber')?.dirty)"
+                     placeholder="1234 5678 9012 3456" maxlength="19">
+              <div *ngIf="cardDetails.get('cardNumber')?.invalid && (cardDetails.get('cardNumber')?.touched || cardDetails.get('cardNumber')?.dirty)" 
+                   class="error-message">
+                Numéro de carte invalide (16 chiffres)
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiryDate">Date d'expiration *</label>
+                <input id="expiryDate" type="text" formControlName="expiryDate"
+                       (input)="formatExpiryDate($event)"
+                       [class.invalid]="cardDetails.get('expiryDate')?.invalid && (cardDetails.get('expiryDate')?.touched || cardDetails.get('expiryDate')?.dirty)"
+                       placeholder="MM/AA" maxlength="5">
+                <div *ngIf="cardDetails.get('expiryDate')?.invalid && (cardDetails.get('expiryDate')?.touched || cardDetails.get('expiryDate')?.dirty)" 
+                     class="error-message">
+                  Format invalide (MM/AA)
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV *</label>
+                <input id="cvv" type="text" formControlName="cvv"
+                       [class.invalid]="cardDetails.get('cvv')?.invalid && (cardDetails.get('cvv')?.touched || cardDetails.get('cvv')?.dirty)"
+                       placeholder="123" maxlength="3">
+                <div *ngIf="cardDetails.get('cvv')?.invalid && (cardDetails.get('cvv')?.touched || cardDetails.get('cvv')?.dirty)" 
+                     class="error-message">
+                  CVV invalide (3 chiffres)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conditions générales -->
+        <div class="form-section">
+          <label class="terms-agreement"
+                 [class.invalid]="checkoutForm.get('agreeToTerms')?.invalid && (checkoutForm.get('agreeToTerms')?.touched || checkoutForm.get('agreeToTerms')?.dirty)">
+            <input type="checkbox" formControlName="agreeToTerms">
+            <span class="checkmark"></span>
+            J'accepte les <a href="#" class="terms-link">conditions générales de vente</a> et la <a href="#" class="terms-link">politique de confidentialité</a> *
+          </label>
+          <div *ngIf="checkoutForm.get('agreeToTerms')?.invalid && (checkoutForm.get('agreeToTerms')?.touched || checkoutForm.get('agreeToTerms')?.dirty)" 
+               class="error-message">
+            Vous devez accepter les conditions générales
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne récapitulative -->
+      <div class="summary-column">
+        <div class="order-summary">
+          <h3 class="summary-title">Récapitulatif de la commande</h3>
+
+          <div class="items-list" *ngIf="cartItems.length > 0">
+            <div *ngFor="let item of cartItems" class="summary-item">
+              <img [src]="resolveImage(item.image_url)" 
+                   [alt]="item.name"
+                   (error)="onImageError($event)">
+              <div class="item-details">
+                <span class="item-name">{{ item.name }}</span>
+                <span class="item-price">{{ item.price }} TND x {{ item.quantity }}</span>
+              </div>
+              <span class="item-total">{{ getItemTotal(item) }} TND</span>
+            </div>
+          </div>
+
+          <div *ngIf="cartItems.length === 0" class="empty-cart-message">
+            <i class="fas fa-shopping-cart"></i>
+            <p>Votre panier est vide</p>
+            <a routerLink="/products" class="continue-shopping">Continuer vos achats</a>
+          </div>
+
+          <div class="summary-totals" *ngIf="cartItems.length > 0">
+            <div class="total-line">
+              <span>Sous-total</span>
+              <span>{{ subtotal }} TND</span>
+            </div>
+            <div class="total-line">
+              <span>Livraison</span>
+              <span>{{ shippingCost }} TND</span>
+            </div>
+            <div class="total-line grand-total">
+              <span>Total</span>
+              <span>{{ total }} TND</span>
+            </div>
+          </div>
+
+          <button type="submit" 
+                  class="submit-order-btn" 
+                  [disabled]="isLoading || checkoutForm.invalid || cartItems.length === 0"
+                  [class.loading]="isLoading">
+            <span *ngIf="!isLoading" class="btn-content">
+              <i class="fas fa-lock"></i>
+              Payer {{ total }} TND
+            </span>
+            <span *ngIf="isLoading" class="btn-content">
+              <i class="fas fa-spinner fa-spin"></i>
+              Traitement en cours...
+            </span>
+          </button>
+
+          <p class="security-notice" *ngIf="cartItems.length > 0">
+            <i class="fas fa-shield-alt"></i>
+            Paiement sécurisé - Vos données sont protégées
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

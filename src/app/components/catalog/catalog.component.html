@@ -1,0 +1,209 @@
+<div class="catalog-container">
+  <div *ngIf="showNotification" class="notification" [class.show]="showNotification">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ notificationMessage }}</span>
+    </div>
+  </div>
+
+  <header class="catalog-header">
+    <div class="header-content">
+      <h1 class="page-title">{{ selectedCategoryId ? getCategoryName(selectedCategoryId) : 'Notre Collection' }}</h1>
+      <p class="product-count">
+        {{ getTotalDisplayedProducts() }} parfum{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
+      </p>
+    </div>
+  </header>
+
+  <div class="catalog-main" *ngIf="viewMode === 'products'">
+    <aside class="filters-sidebar">
+      <div class="filters-header">
+        <h3>Filtres</h3>
+        <button class="reset-btn" (click)="resetFilters()">
+          <i class="fas fa-redo"></i>
+          Réinitialiser
+        </button>
+      </div>
+
+    
+      <div class="filter-group">
+        <h4>Catégories</h4>
+        <div class="category-list">
+          <button class="category-btn" 
+                  [class.active]="!selectedCategoryId"
+                  (click)="onCategoryChange(null)">
+            Toutes les catégories
+          </button>
+          <button class="category-btn" 
+                  *ngFor="let category of categories"
+                  [class.active]="selectedCategoryId === category.id"
+                  (click)="onCategoryChange(category.id.toString())">
+            {{ category.name }}
+          </button>
+        </div>
+      </div>
+
+   
+      <div class="filter-group">
+        <h4>Prix (TND)</h4>
+        <div class="price-inputs">
+          <input type="number" [(ngModel)]="minPrice" (change)="onPriceChange()" min="80" max="500">
+          <input type="number" [(ngModel)]="maxPrice" (change)="onPriceChange()" min="80" max="500">
+        </div>
+        <div class="range-slider-simple">
+          <div class="slider-track"></div>
+          <div class="slider-fill" [ngStyle]="{ left: leftPercent, right: rightPercent }"></div>
+          <input type="range" [min]="priceMinLimit" [max]="priceMaxLimit" 
+                 [(ngModel)]="minPrice" (input)="onPriceInput()" (change)="onPriceChange()">
+          <input type="range" [min]="priceMinLimit" [max]="priceMaxLimit" 
+                 [(ngModel)]="maxPrice" (input)="onPriceInput()" (change)="onPriceChange()">
+        </div>
+      </div>
+
+      
+      <div class="filter-group">
+        <h4>Note minimale</h4>
+        <div class="rating-options-simple">
+          <button class="rating-btn" 
+                  [class.active]="minRating === null"
+                  (click)="onRatingChange(null)">
+            Toutes les notes
+          </button>
+          <button class="rating-btn" 
+                  *ngFor="let rating of [4, 3, 2, 1]"
+                  [class.active]="minRating === rating"
+                  (click)="onRatingChange(rating)">
+            <span class="stars-small">
+              <span class="star filled" *ngFor="let s of [1,2,3,4,5].slice(0, rating)">★</span>
+              <span class="star" *ngFor="let s of [1,2,3,4,5].slice(rating)">★</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  
+    <main class="products-section">
+      <div class="sort-bar">
+        <div class="sort-controls">
+          <label>Trier par:</label>
+          <select [ngModel]="sortOption" (ngModelChange)="onSortChange($event)">
+            <option [ngValue]="null">Par défaut</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="price_desc">Prix décroissant</option>
+            <option value="popularity">Popularité</option>
+            <option value="new">Nouveautés</option>
+          </select>
+        </div>
+        <div class="results-count">
+          {{ getTotalDisplayedProducts() }} résultat{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
+        </div>
+      </div>
+
+ 
+      <div *ngIf="loading && perfumes.length === 0" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Chargement des parfums...</p>
+      </div>
+
+ 
+      <div *ngIf="perfumes.length > 0" class="products-grid">
+        <div class="product-card" *ngFor="let perfume of perfumes" (click)="goToProduct(perfume.id)">
+          <div class="product-image">
+            <img [src]="resolveImage(perfume.image_url || perfume.imageUrl)" [alt]="perfume.name" (error)="handleImageError($event)">
+            <button class="wishlist-btn" 
+                    (click)="toggleWishlist(perfume, $event)"
+                    [class.active]="wishlistStatus[perfume.id]">
+              <i class="fas fa-heart"></i>
+            </button>
+            <div class="product-badges">
+              <span *ngIf="perfume.is_featured" class="badge featured">Vedette</span>
+              <span *ngIf="perfume.rating >= 4.5" class="badge popular">Populaire</span>
+              <span *ngIf="isNewPerfume(perfume)" class="badge new">Nouveau</span>
+            </div>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">{{ perfume.name }}</h3>
+            <p class="product-brand">{{ perfume.brand }}</p>
+            <div class="product-rating">
+              <span class="stars">
+                <span class="star" *ngFor="let s of starArray" [class.filled]="s <= (perfume.rating || 0)">★</span>
+              </span>
+              <span class="rating-value">{{ (perfume.rating || 0).toFixed(1) }}</span>
+            </div>
+            <div class="product-tags">
+              <span class="tag">{{ perfume.intensity }}</span>
+              <span class="tag">{{ perfume.season }}</span>
+            </div>
+            <div class="product-footer">
+              <div class="price-container">
+                <span class="product-price">{{ perfume.price }} TND</span>
+              </div>
+              <button class="add-to-cart-btn" (click)="addToCart(perfume, $event)">
+                <i class="fas fa-shopping-cart"></i>
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="!loading && !endReached && perfumes.length > 0" class="load-more-container">
+        <button class="load-more-btn" (click)="loadMore()">
+          <i class="fas fa-plus"></i>
+          Charger plus
+        </button>
+      </div>
+
+     
+      <div *ngIf="!loading && perfumes.length === 0" class="no-results">
+        <div class="no-results-content">
+          <i class="fas fa-search"></i>
+          <h3>Aucun parfum trouvé</h3>
+          <p>Aucun parfum ne correspond à vos critères.</p>
+          <button class="reset-btn" (click)="resetFilters()">
+            Réinitialiser les filtres
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="catalog-main" *ngIf="viewMode === 'categories'">
+    <main class="products-section">
+      <div class="products-grid categories-grid">
+        <div class="category-block" *ngFor="let category of categories">
+          <a [routerLink]="['/catalog']" [queryParams]="{ category: category.id }" class="category-card">
+            <div class="category-image" [style.backgroundImage]="'url(' + resolveImage(category.image_url || category.imageUrl) + ')'">
+            </div>
+            <div class="category-info">
+              <h3 class="category-name">{{ category.name }}</h3>
+              <p class="category-description">{{ category.description || 'Découvrez notre collection exclusive' }}</p>
+            </div>
+          </a>
+          <div class="category-products" *ngIf="categoryProducts[category.id]?.length">
+            <div class="products-grid">
+              <div class="product-card" *ngFor="let perfume of categoryProducts[category.id]" (click)="goToProduct(perfume.id)">
+                <div class="product-image">
+                  <img [src]="resolveImage(perfume.image_url || perfume.imageUrl)" [alt]="perfume.name" (error)="handleImageError($event)">
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">{{ perfume.name }}</h3>
+                  <p class="product-brand">{{ perfume.brand }}</p>
+                  <div class="product-footer">
+                    <div class="price-container">
+                      <span class="product-price">{{ perfume.price }} TND</span>
+                    </div>
+                    <button class="add-to-cart-btn" (click)="addCategoryProductToCart(perfume, $event)">
+                      <i class="fas fa-shopping-cart"></i>
+                      Ajouter
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+# Robots.txt pour Maison Bonheur
+# Guide d'indexation pour les moteurs de recherche (Google, Bing, etc.)
+
+User-agent: *
+# Pages publiques autorisées à être explorées
+Allow: /
+Allow: /catalog
+Allow: /product/
+Allow: /creator
+
+# Pages privées ou dynamiques à ne pas indexer (panier, compte client, commande)
+Disallow: /profile
+Disallow: /panier
+Disallow: /checkout
+Disallow: /order-confirmation/
+Disallow: /orders
+Disallow: /addresses
+Disallow: /wishlist
+Disallow: /api/
+
+# Emplacement du sitemap XML
+Sitemap: https://maisonbonheur.tn/sitemap.xml

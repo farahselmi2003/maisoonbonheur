@@ -1,0 +1,5 @@
+{
+  "/api/*": "/$1",
+  "/api/perfumes/featured": "/perfumes?is_featured=true",
+  "/perfumes/featured": "/perfumes?is_featured=true"
+}
