@@ -45,7 +45,7 @@ export class WishlistComponent implements OnInit {
       id: item.id.toString(),
       name: item.name,
       price: item.price,
-      image_url: this.resolveImage(item.image_url || 'assets/images/parfume.webp'),
+      image_url: this.resolveImage(item.image_url || '/assets/images/parfume.webp'),
       quantity: 1
     });
   }
@@ -55,16 +55,17 @@ export class WishlistComponent implements OnInit {
   }
 
   resolveImage(url?: string): string {
-    if (!url) return 'assets/images/parfume.webp';
+    if (!url) return '/assets/images/parfume.webp';
     const u = String(url);
     if (u.startsWith('http://') || u.startsWith('https://')) return u;
-    if (u.startsWith('/assets/') || u.startsWith('assets/')) return u;
+    if (u.startsWith('/assets/')) return u;
+    if (u.startsWith('assets/')) return `/${u}`;
     if (u.startsWith('/')) return `${environment.assetBaseUrl}${u}`;
-    return `assets/images/${u}`;
+    return `/assets/images/${u}`;
   }
 
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.src = 'assets/images/parfume.webp';
+    img.src = '/assets/images/parfume.webp';
   }
 }

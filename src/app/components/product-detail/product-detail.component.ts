@@ -144,12 +144,13 @@ export class ProductDetailComponent implements OnInit {
   }
 
   private generateProductImages(perfume: Perfume): string[] {
-    const baseImage = perfume.image_url || 'assets/images/parfume.webp';
+    const baseImage = perfume.image_url || '/assets/images/parfume.webp';
     const u = String(baseImage);
     if (u.startsWith('http://') || u.startsWith('https://')) return [u];
-    if (u.startsWith('/assets/') || u.startsWith('assets/')) return [u];
+    if (u.startsWith('/assets/')) return [u];
+    if (u.startsWith('assets/')) return [`/${u}`];
     if (u.startsWith('/')) return [`${environment.assetBaseUrl}${u}`];
-    return [`assets/images/${u}`];
+    return [`/assets/images/${u}`];
   }
 
   private loadSimilarProducts(categoryId: number, currentProductId: number): void {
@@ -181,12 +182,12 @@ export class ProductDetailComponent implements OnInit {
 
   onImageErrorMain() {
     if (!this.product) return;
-    this.product.images[this.selectedImageIndex] = 'assets/images/parfume.webp';
+    this.product.images[this.selectedImageIndex] = '/assets/images/parfume.webp';
   }
 
   onImageErrorThumb(index: number) {
     if (!this.product) return;
-    this.product.images[index] = 'assets/images/parfume.webp';
+    this.product.images[index] = '/assets/images/parfume.webp';
   }
 
   incrementQuantity(): void {

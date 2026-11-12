@@ -152,7 +152,7 @@ export class CreatorComponent implements OnInit {
       mood: this.currentMood,
       name: creationName,
       price: creationPrice,
-      image_url: 'assets/images/custom-perfume.jpg',
+      image_url: '/assets/images/parfume.webp',
       brand: 'Votre Création',
       is_custom: true,
       description: this.generateCreationDescription()

@@ -122,16 +122,17 @@ export class OrdersComponent implements OnInit {
 
   
   handleImageError(event: any): void {
-    event.target.src = 'assets/images/parfume.webp';
+    event.target.src = '/assets/images/parfume.webp';
   }
 
   resolveImage(url?: string): string {
-    if (!url) return 'assets/images/parfume.webp';
+    if (!url) return '/assets/images/parfume.webp';
     const u = String(url);
     if (u.startsWith('http://') || u.startsWith('https://')) return u;
-    if (u.startsWith('/assets/') || u.startsWith('assets/')) return u;
+    if (u.startsWith('/assets/')) return u;
+    if (u.startsWith('assets/')) return `/${u}`;
     if (u.startsWith('/')) return `${environment.assetBaseUrl}${u}`;
-    return `assets/images/${u}`;
+    return `/assets/images/${u}`;
   }
 
 
