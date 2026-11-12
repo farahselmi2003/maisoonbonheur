@@ -1,4 +1,4 @@
-{
+﻿{
   "categories": [
     {
       "id": 1,
@@ -34,7 +34,7 @@
       "id": 6,
       "name": "Fruité",
       "description": "Notes fruitées",
-      "image_url": "assets/images/fruité.jpg"
+      "image_url": "assets/images/fruite.jpg"
     }
   ],
   "perfumes": [
@@ -142,7 +142,7 @@
       "brand": "Maison Bonheur",
       "price": 105,
       "description": "Cocktail fruité savoureux",
-      "image_url": "assets/images/fruité.jpg",
+      "image_url": "assets/images/fruite.jpg",
       "rating": 4.4,
       "intensity": "Eau de Parfum",
       "season": "Spring",
@@ -212,7 +212,7 @@
       "brand": "Maison Bonheur",
       "price": 155,
       "description": "Bois nobles et chauds",
-      "image_url": "assets/images/boisé.webp",
+      "image_url": "assets/images/boise.webp",
       "rating": 4.2,
       "intensity": "Eau de Parfum",
       "season": "Autumn",
@@ -226,7 +226,7 @@
       "brand": "Maison Bonheur",
       "price": 125,
       "description": "Rose éclatante",
-      "image_url": "assets/images/eclat rose.jpeg",
+      "image_url": "assets/images/eclat-rose.jpeg",
       "rating": 4.1,
       "intensity": "Eau de Parfum",
       "season": "Summer",
@@ -310,7 +310,7 @@
       "brand": "Maison Bonheur",
       "price": 102,
       "description": "Notes fruitées",
-      "image_url": "assets/images/fruité.jpg",
+      "image_url": "assets/images/fruite.jpg",
       "rating": 4.2,
       "intensity": "Eau de Parfum",
       "season": "Spring",
@@ -656,3 +656,4 @@
     }
   ]
 }
+
