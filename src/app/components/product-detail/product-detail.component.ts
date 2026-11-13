@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Title, Meta } from '@angular/platform-browser';
 import { CartService } from '../../services/cart.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { JsonServerService, Perfume } from '../../services/json-server';
@@ -57,7 +58,9 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private jsonServerService: JsonServerService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private titleService: Title,
+    private metaService: Meta
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +86,7 @@ export class ProductDetailComponent implements OnInit {
                 user_name: review.user_name || 'Utilisateur'
               }));
               this.product = this.mapPerfumeToProduct(perfume, safeReviews);
+              this.updateSeoTags(this.product);
               this.analyticsService.trackViewItem({
                 id: this.product.id,
                 name: this.product.name,
@@ -94,6 +98,7 @@ export class ProductDetailComponent implements OnInit {
             },
             error: (reviewError) => {
               this.product = this.mapPerfumeToProduct(perfume, []);
+              this.updateSeoTags(this.product);
               this.analyticsService.trackViewItem({
                 id: this.product.id,
                 name: this.product.name,
@@ -114,6 +119,28 @@ export class ProductDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  private updateSeoTags(product: Product): void {
+    const pageTitle = `${product.name} - Eau de Parfum | Maison Bonheur Tunisie`;
+    this.titleService.setTitle(pageTitle);
+
+    const description = product.description && product.description.length > 30 
+      ? product.description 
+      : `Achetez ${product.name} (${product.price} TND) en Tunisie. Eau de parfum haut de gamme signée ${product.brand}. Livraison rapide partout en Tunisie.`;
+
+    this.metaService.updateTag({ name: 'description', content: description });
+    this.metaService.updateTag({
+      name: 'keywords',
+      content: `${product.name}, parfum ${product.name}, acheter ${product.name} tunisie, parfum ${product.brand}, parfum ${product.intensity || 'eau de parfum'} tunisie, prix parfum tunisie`
+    });
+
+    // Balises Open Graph dynamiques
+    this.metaService.updateTag({ property: 'og:title', content: pageTitle });
+    this.metaService.updateTag({ property: 'og:description', content: description });
+    if (product.images && product.images.length > 0) {
+      this.metaService.updateTag({ property: 'og:image', content: `https://maisonbonheur.tn${product.images[0]}` });
+    }
   }
 
   private mapPerfumeToProduct(perfume: Perfume, reviews: Review[]): Product {

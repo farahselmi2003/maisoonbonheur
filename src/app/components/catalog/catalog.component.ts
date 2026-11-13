@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { Title, Meta } from '@angular/platform-browser';
 import { CartService } from '../../services/cart.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { JsonServerService, Category, Perfume } from '../../services/json-server';
@@ -49,10 +50,21 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private jsonServerService: JsonServerService,
     private cartService: CartService,
     private wishlistService: WishlistService,
+    private titleService: Title,
+    private metaService: Meta,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('Catalogue Parfums Tunisie | Collection & Prix | Maison Bonheur');
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'Achetez votre parfum en Tunisie parmi notre collection d’eaux de parfum, parfums orientaux, boisés et floraux au meilleur prix. Livraison express.'
+    });
+    this.metaService.updateTag({
+      name: 'keywords',
+      content: 'catalogue parfum tunisie, prix parfum tunisie, eau de parfum femme tunisie, parfum homme tunisie, promo parfum tunisie'
+    });
     this.initFromUrl();
     this.loadCategories();
     this.loadWishlistStatus();

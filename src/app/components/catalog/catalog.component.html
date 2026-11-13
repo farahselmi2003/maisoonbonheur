@@ -8,9 +8,12 @@
 
   <header class="catalog-header">
     <div class="header-content">
-      <h1 class="page-title">{{ selectedCategoryId ? getCategoryName(selectedCategoryId) : 'Notre Collection' }}</h1>
+      <h1 class="page-title">{{ selectedCategoryId ? getCategoryName(selectedCategoryId) : 'Catalogue Parfums Tunisie | Notre Collection Fine' }}</h1>
       <p class="product-count">
-        {{ getTotalDisplayedProducts() }} parfum{{ getTotalDisplayedProducts() > 1 ? 's' : '' }}
+        {{ getTotalDisplayedProducts() }} parfum{{ getTotalDisplayedProducts() > 1 ? 's' : '' }} authentiques
+      </p>
+      <p class="catalog-seo-desc" style="font-size: 0.95rem; color: #666; max-width: 800px; margin: 8px auto 0;">
+        Explorez notre sélection exclusive d'eaux de parfum, parfums orientaux, floraux et boisés en Tunisie. Profitez des meilleurs prix et d'une livraison rapide à domicile.
       </p>
     </div>
   </header>

@@ -25,6 +25,14 @@ export class AnalyticsService {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.trackPageView(event.urlAfterRedirects);
+        if (typeof window !== 'undefined' && window.location) {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            this.trackCampaignUtm(params);
+          } catch (e) {
+            // Ignorer si URLSearchParams indisponible
+          }
+        }
       });
   }
 
@@ -179,5 +187,27 @@ export class AnalyticsService {
    */
   trackSearch(searchTerm: string): void {
     this.trackEvent('search', { search_term: searchTerm });
+  }
+
+  /**
+   * Capture automatique des paramètres UTM (Google Campaign URL Builder)
+   * Enregistre la source, le medium et la campagne dans Google Analytics et dataLayer
+   */
+  trackCampaignUtm(urlParams: URLSearchParams): void {
+    const source = urlParams.get('utm_source');
+    const medium = urlParams.get('utm_medium');
+    const campaign = urlParams.get('utm_campaign');
+    const term = urlParams.get('utm_term');
+    const content = urlParams.get('utm_content');
+
+    if (source || campaign) {
+      this.trackEvent('campaign_traffic', {
+        campaign_source: source || 'direct',
+        campaign_medium: medium || 'none',
+        campaign_name: campaign || 'unspecified',
+        campaign_term: term,
+        campaign_content: content
+      });
+    }
   }
 }
