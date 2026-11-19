@@ -56,15 +56,23 @@ export class CatalogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('Catalogue Parfums Tunisie | Collection & Prix | Maison Bonheur');
-    this.metaService.updateTag({
-      name: 'description',
-      content: 'Achetez votre parfum en Tunisie parmi notre collection d’eaux de parfum, parfums orientaux, boisés et floraux au meilleur prix. Livraison express.'
-    });
+    const pageTitle = 'Catalogue Parfums Tunisie | Collection & Prix | Maison Bonheur';
+    const pageDescription = 'Achetez votre parfum en Tunisie parmi notre collection d’eaux de parfum, parfums orientaux, boisés et floraux au meilleur prix. Livraison express.';
+    
+    this.titleService.setTitle(pageTitle);
+    this.metaService.updateTag({ name: 'description', content: pageDescription });
     this.metaService.updateTag({
       name: 'keywords',
       content: 'catalogue parfum tunisie, prix parfum tunisie, eau de parfum femme tunisie, parfum homme tunisie, promo parfum tunisie'
     });
+
+    // Balises Open Graph pour le catalogue
+    this.metaService.updateTag({ property: 'og:title', content: pageTitle });
+    this.metaService.updateTag({ property: 'og:description', content: pageDescription });
+    this.metaService.updateTag({ property: 'og:url', content: 'https://maisonbonheur.tn/catalog' });
+    this.metaService.updateTag({ property: 'og:image', content: 'https://maisonbonheur.tn/assets/images/colllection.webp' });
+    this.metaService.updateTag({ property: 'og:type', content: 'website' });
+
     this.initFromUrl();
     this.loadCategories();
     this.loadWishlistStatus();

@@ -135,11 +135,15 @@ export class ProductDetailComponent implements OnInit {
       content: `${product.name}, parfum ${product.name}, acheter ${product.name} tunisie, parfum ${product.brand}, parfum ${product.intensity || 'eau de parfum'} tunisie, prix parfum tunisie`
     });
 
-    // Balises Open Graph dynamiques
+    // Balises Open Graph dynamiques pour le produit
+    this.metaService.updateTag({ property: 'og:type', content: 'product' });
     this.metaService.updateTag({ property: 'og:title', content: pageTitle });
     this.metaService.updateTag({ property: 'og:description', content: description });
+    this.metaService.updateTag({ property: 'og:url', content: `https://maisonbonheur.tn/product/${product.id}` });
     if (product.images && product.images.length > 0) {
-      this.metaService.updateTag({ property: 'og:image', content: `https://maisonbonheur.tn${product.images[0]}` });
+      const fullImg = product.images[0].startsWith('http') ? product.images[0] : `https://maisonbonheur.tn${product.images[0]}`;
+      this.metaService.updateTag({ property: 'og:image', content: fullImg });
+      this.metaService.updateTag({ property: 'og:image:secure_url', content: fullImg });
     }
   }
 
